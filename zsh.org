@@ -1,0 +1,269 @@
+#+TITLE: My macOS dotfiles
+#+AUTHOR: Ogi Martinovic
+#+OPTIONS: num:nil
+
+#+TOC: 
+
+* Zsh
+
+** Startup files order
+
+1. .zshenv →
+2. .zprofile [if login] →
+3. [.zshrc if interactive] →
+4. [.zlogin if login] →
+5. [.zlogout sometimes]
+
+** Config
+
+*** zshenv
+:properties:
+:header-args: :tangle ~/.dotfiles/zsh/.zshenv :eval no
+:end:
+
+**** About
+
+#+begin_src shell
+  # .zshenv
+  #
+  # This is a generated file from ~/.dotfiles/zsh.org
+  # Do not edit!
+#+end_src
+
+**** XDG Home
+
+#+begin_src shell
+  export XDG_CONFIG_HOME="$HOME/.config"
+  export XDG_CACHE_HOME="$HOME/.cache"
+  export XDG_DATA_HOME="$HOME/.local/share"
+#+end_src
+
+**** ZDOT Dir
+
+#+begin_src shell
+  export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+#+end_src
+
+*** zshrc
+:properties:
+:header-args: :tangle ~/.dotfiles/zsh/.config/zsh/.zshrc :eval no
+:end:
+
+**** About
+
+  #+begin_src shell
+  # .zshrc
+  #
+  # This is a generated file from ~/.dotfiles/zsh.org
+  # Do not edit!
+  #+end_src
+
+**** Modules
+
+#+begin_src shell
+  autoload -Uz compinit colors vcs_info
+  precmd() { vcs_info }
+#+end_src
+
+**** Settings
+
+#+begin_src shell
+  setopt INC_APPEND_HISTORY
+  setopt HIST_IGNORE_ALL_DUPS
+  setopt HIST_IGNORE_ALL_DUPS
+  setopt CORRECT_ALL
+  setopt prompt_subst
+  unsetopt beep
+#+end_src
+
+**** Keybindings
+
+#+begin_src shell
+  bindkey -e
+  export KEYTIMEOUT=1
+#+end_src
+
+**** History
+
+#+begin_src shell
+  HISTFILE=~/.zsh_history
+  HISTSIZE=10000
+  SAVEHIST=10000
+#+end_src
+
+**** Prompt
+
+#+begin_src shell
+  zstyle ':vcs_info:git:*' formats $' %F{cyan}%b%u%c%f'
+  zstyle ':vcs_info:git:*' actionformats 'g:%b|%a%u%c'
+  zstyle ':vcs_info:*' check-for-changes true
+  zstyle ':vcs_info:*' unstagedstr ':*'
+  zstyle ':vcs_info:*' stagedstr ':+'
+
+  export VIRTUAL_ENV_DISABLE_PROMPT=0
+
+  function venv_info {
+      [ $VIRTUAL_ENV ] && echo '%F{blue}'`basename $VIRTUAL_ENV`'%f '
+  }
+
+  PS1='%F{white}[%f'
+  PS1+='$(venv_info)'
+  PS1+='%F{magenta}%(4~|.../%2~|%~)%f'
+  PS1+='${vcs_info_msg_0_}'
+  PS1+=$'%F{white}]>%f '
+  RPROMPT=''
+#+end_src
+
+**** Completion
+
+#+begin_src shell
+  zstyle ':completion:*' completer _complete _correct _approximate
+  fpath=(~/.zsh/completion $fpath)
+  compinit
+#+end_src
+
+**** Colors
+
+#+begin_src shell
+  colors
+  export CLICOLOR=1
+#+end_src
+
+**** Terminal
+
+#+begin_src shell
+  export EDITOR=vi
+  export VISUAL=vi
+  export LANG=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+  export TERM=xterm-256color
+#+end_src
+
+**** FZF
+
+#+begin_src shell
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+  export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!{.git,node_modules,vendor,target,build,out}/*"'
+  export FZF_DEFAULT_OPTS="--no-bold --color=dark,bg:black,bg+:black"
+#+end_src
+
+**** Aliases
+
+#+begin_src shell
+  alias ll='exa -gal --git --sort=type --time-style=long-iso'
+  alias tree='exa -a --tree --sort=type --ignore-glob=.git'
+  alias bat='bat --theme=base16'
+  alias vi='nvim'
+  alias em='emacs $@'
+  alias ec='emacsclient $@'
+  alias clion='open -na "CLion.app" --args "$@"'
+  alias intellij='open -na "IntelliJ IDEA.app" --args "$@"'
+  alias goland='open -na "GoLand.app" --args "$@"'
+#+end_src
+
+**** Emacs VTerm
+
+#+begin_src shell
+  if [[ "$INSIDE_EMACS" = 'vterm' ]] \
+      && [[ -f ~/.config/zsh/vterm-zsh.sh ]]; then
+	  source ~/.config/emacs/vterm-zsh.sh
+  fi
+#+end_src
+
+*** zprofile
+:properties:
+:header-args: :tangle ~/.dotfiles/zsh/.config/zsh/.zprofile :eval no
+:end:
+
+**** About
+
+#+begin_src shell
+  # .zprofile
+  #
+  # This is a generated file from ~/.dotfiles/zsh.org
+  # Do not edit!
+#+end_src
+
+**** Homebrew
+
+#+begin_src shell
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+#+end_src
+
+**** Go
+
+#+begin_src shell 
+  export PATH="$PATH:$(go env GOPATH)/bin"
+  export GOPATH="$(go env GOPATH)"
+#+end_src
+
+**** Rust
+
+#+begin_src shell
+  source "$HOME/.cargo/env"
+#+end_src
+
+*** vterm-zsh
+:properties:
+:header-args: :tangle ~/.dotfiles/zsh/.config/zsh/vterm-zsh.sh :eval no
+:end:
+
+**** Track Prompt
+
+#+begin_src shell
+  vterm_prompt_end() {
+      vterm_printf "51;A$(whoami)@$(hostname):$(pwd)"
+  }
+  setopt PROMPT_SUBST
+  PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
+#+end_src
+
+**** VTerm Printf
+
+#+begin_src shell
+  vterm_printf() {
+      if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ]); then
+	  # Tell tmux to pass the escape sequences through
+	  printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+      else
+	  printf "\e]%s\e\\" "$1"
+      fi
+  }
+#+end_src
+
+**** VTerm Command
+
+#+begin_src shell
+  vterm_cmd() {
+      local vterm_elisp
+      vterm_elisp=""
+      while [ $# -gt 0 ]; do
+	  vterm_elisp="$vterm_elisp""$(printf '"%s" ' "$(printf "%s" "$1" | sed -e 's|\\|\\\\|g' -e 's|"|\\"|g')")"
+	  shift
+      done
+      vterm_printf "51;E$vterm_elisp"
+  }
+#+end_src
+
+**** Find File
+
+#+begin_src shell
+  find_file() {
+    vterm_cmd find-file "$(realpath "${@:-.}")"
+  }
+#+end_src
+
+**** Alias
+
+#+begin_src shell
+  alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
+  alias ff='find_file'
+#+end_src
+
+**** FZF Theme
+
+#+begin_src shell
+  if [[ "$EMACS_THEME" == "modus-operandi" ]]; then
+    export FZF_DEFAULT_OPTS="--color=16,bg:#ffffff,bg+:#ffffff"
+  fi
+#+end_src

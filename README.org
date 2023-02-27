@@ -1,0 +1,103 @@
+#+TITLE: My macOS dotfiles
+#+AUTHOR: Ogi Martinovic
+#+OPTIONS: num:nil toc:nil
+
+* dotfiles
+
+My macOS dotfiles and development environment.
+
+/Literate programming/ configuration using org-mode babel and stow (see the details in configuration section).
+
+** Environment
+
+*** Editors
+
+- Emacs (main editor/environment)
+- NeoVim
+
+*** Shell and Terminals
+
+- zsh
+- VTerm (emacs)
+- iTerm2
+
+*** Languages
+
+- C (clang)
+- Clojure
+- Common Lisp (sbcl)
+- Go
+- Prolog (swi)
+- Python
+- Rust
+
+*** CLI Utilities
+
+- brew
+- stow
+- tmux
+- ripgrep
+- fzf
+- fd
+- exa
+- bat
+
+*** Doc Utilities
+
+- pandoc
+- graphviz
+- aspell
+- grip
+- latex
+
+*** Fonts
+
+- MonoLisa (fixed)
+- Helvetica Neue (sans serif)
+
+*** Themes
+
+- Emacs: Modus Operandi
+- iTerm2: Tinted Theming tokyo-night-storm
+- NeoVim: tokyonight.nvim
+
+** Configuration
+
+*** Clone
+
+This repo:
+
+#+begin_src shell :eval no
+  git clone https://github.com/ogimart/dotfiles ~/.dotfiles
+#+end_src
+
+*** Generate config files
+
+The configuration is managed by /org/ files in /.dotfiles/ directory.
+
+- emacs.org
+- zsh.org
+- tmux.org
+
+The config files are generated from Emacs's org-mode babel (tangle: /C-c C-v t/).
+
+*** Symbolic Links to XDG config
+
+#+begin_src sh
+  mkdir -p ~/.config/emacs
+  mkdir -p ~/.config/zsh
+  mkdir -p ~/.config/tmux
+  cd ~/.dotfiles
+  stow emacs
+  stow zsh
+  stow tmux
+#+end_src
+
+*** Themes
+
+#+begin_src shell :eval no
+mkdir -p ~/.config/themes
+git clone https://github.com/tinted-theming/base16-iterm2.git ~/.config/themes/base16-iterm2
+git clone https://github.com/tinted-theming/base16-fzf.git ~/.config/themes/base16-fzf
+git clone https://github.com/tinted-theming/base16-tmux.git ~/.config/themes/base16-tmux
+#+end_src

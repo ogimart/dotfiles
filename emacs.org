@@ -1,0 +1,646 @@
+#+TITLE: My macOS dotfiles
+#+AUTHOR: Ogi Martinovic
+#+OPTIONS: num:nil
+
+#+TOC: 
+
+* Emacs
+
+Tested on Emacs 29.0.60, macOS emacs-plus distribution.
+
+** Install Emacs
+
+*** Homebrew
+
+**** [[https://github.com/d12frosted/homebrew-emacs-plus][emacs-plus]]
+
+#+begin_src shell :tangle no :eval no
+  brew tap d12frosted/emacs-plus
+  brew install emacs-plus@29 --with-native-comp --with-xwidgets --with-elrumo2-icon
+#+end_src
+
+** Early Init File
+:properties:
+:header-args: :tangle ~/.dotfiles/emacs/.config/emacs/early-init.el :eval no
+:end:
+
+**** About
+
+#+begin_src emacs-lisp
+  ;;;; early-init.el
+  ;;;;
+  ;;;; This is a generated file from ~/.dotfiles/emacs.org
+  ;;;; Do not edit!
+#+end_src
+
+**** Native Compilation
+
+For Emacs with native compilation (version >= 28.1):
+
+
+#+begin_src emacs-lisp
+  (setq native-comp-speed 2
+        native-comp-jit t
+        native-comp-async-report-warnings-errors nil)
+#+end_src
+
+**** Emacs Frame Settings
+
+#+begin_src emacs-lisp
+  (setq inhibit-splash-screen t)
+  (tool-bar-mode 0)
+  (scroll-bar-mode 0)
+  (delete-selection-mode 1)
+  (setq blink-cursor-mode nil)
+  (setq line-number-mode t)
+  (setq column-number-mode t)
+  (if (not (display-graphic-p))
+      (menu-bar-mode 0))
+  (setq default-frame-alist '((width . 160) (height . 42)))
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . light))
+  (setq ns-use-proxy-icon nil
+	ns-antialias t
+	ns-use-thin-smoothing nil)
+  (pixel-scroll-precision-mode)
+  ;; (setq x-underline-at-descent-line t)
+#+end_src
+
+**** Fixed and Variable Pitch Fonts
+
+#+begin_src emacs-lisp
+  (set-face-attribute 'default nil :family "MonoLisa"
+		      :height 130 :weight 'normal)
+  (set-face-attribute 'variable-pitch nil :family "Helvetica Neue"
+		      :height 160 :weight 'normal)
+#+end_src
+
+** Init File
+:properties:
+:header-args: :tangle ~/.dotfiles/emacs/.config/emacs/init.el :eval no
+:end:
+
+**** About
+
+#+begin_src emacs-lisp
+  ;;;; init.el
+  ;;;;
+  ;;;; This is a generated file from ~/.dotfiles/emacs.org
+  ;;;; Do not edit!
+#+end_src
+
+*** Garbage Collection
+
+**** Threshold
+
+#+begin_src emacs-lisp
+  (setq gc-cons-threshold (* 2 1024 1024))
+#+end_src
+
+*** Package Manager
+
+[[https://github.com/jwiegley/use-package]]
+
+**** Initialize package manager
+
+#+begin_src emacs-lisp
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+  (setq package-native-compile t)
+#+end_src
+
+**** Config use-package
+
+#+begin_src emacs-lisp
+  (require 'use-package)
+  (require 'use-package-ensure)
+  (setq use-package-always-ensure t)
+  (setq use-package-expand-minimally t)
+#+end_src
+
+*** Files and Backup
+
+**** Backup
+
+#+begin_src emacs-lisp
+  (setq user-emacs-diructory "~/.cache/emacs/")
+  (setq make-backup-files t)
+  (setq backup-directory-alist '(("." . "~/.cache/emacs/backups/")))
+#+end_src
+
+*** Meta Keys
+
+**** Apple Keyboard
+
+Use Option & Command as Meta
+
+#+begin_src emacs-lisp
+  (when (eq system-type 'darwin)
+    (setq mac-command-modifier 'meta)
+    (setq mac-option-modifier 'meta))
+#+end_src
+
+*** Theme
+
+**** Theme Utils
+
+Make bold wieght semi-bold.
+
+#+begin_src emacs-lisp
+  (defun semi-bold ()
+    "Make bold weight semi-bold"
+    (interactive)
+    (mapc (lambda (face)
+	    (when (eq (face-attribute face :weight) 'bold)
+	      (set-face-attribute face nil :weight 'semi-bold)))
+	  (face-list)))
+#+end_src
+
+**** Modus Operandi Theme
+
+#+begin_src emacs-lisp
+  (use-package modus-themes
+    :init
+    (defun custom-modus ()
+      (semi-bold))
+    (add-hook 'after-init-hook (lambda () (custom-modus)))
+    :config
+    (setq modus-themes-common-palette-overrides
+	  `((fg-line-number-active "#adadad")
+	    (fg-line-number-inactive "#cdcdcd")
+	    (bg-line-number-active "#ffffff")
+	    (bg-line-number-inactive "ffffff")
+	    (fg-region nil)
+	    (bg-region "#e6e6e6")
+	    (fringe "#ffffff")
+	    (cursor "#303030")
+	    ,@modus-themes-preset-overrides-faint))
+    (setq modus-themes-weights '(normal semibold))
+    (setenv "EMACS_THEME" "modus-operandi")
+    (load-theme 'modus-operandi t))
+#+end_src
+
+*** Modeline
+
+**** Mood Modeline
+
+#+begin_src emacs-lisp
+  (use-package mood-line
+    :init
+    (mood-line-mode))
+#+end_src
+
+*** Minibuffer
+
+**** Vertico
+
+#+begin_src emacs-lisp
+  (use-package vertico
+    :init
+    (vertico-mode))
+#+end_src
+
+**** Orderless
+
+#+begin_src emacs-lisp
+  (use-package orderless
+    :custom
+    (completion-styles '(orderless basic partial-completion)))
+#+end_src
+
+**** Consult
+
+#+begin_src emacs-lisp
+  (use-package consult
+    :bind (("C-x C-b" . consult-buffer)
+	   ("C-c l"   . consult-line)
+	   ("C-c r"   . consult-ripgrep)))
+#+end_src
+
+**** Marginalia
+
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :defer t
+    :init (marginalia-mode))
+#+end_src
+
+*** Completion and LSP
+
+**** Company Completion
+
+#+begin_src emacs-lisp
+  (use-package company
+    :defer 3
+    :config
+    (global-company-mode))
+#+end_src
+
+**** EGlot LSP
+
+#+begin_src emacs-lisp
+  (use-package eglot
+    :ensure nil
+    :defer t)
+#+end_src
+
+Start eglot automatically
+
+#+begin_src emacs-lisp :tangle no :eval no
+  (add-hook 'XXX-mode-hook 'eglot-ensure)
+#+end_src
+
+*** Language Modes
+
+**** Common Lisp
+
+Steel Bank Common Lisp:
+
+#+begin_src shell :tangle no :eval no
+  brew install sbcl
+  curl -O https://beta.quicklisp.org/quicklisp.lisp
+  sbcl --load quicklisp.lisp
+#+END_SRC
+
+Sly package:
+
+#+begin_src emacs-lisp
+  (use-package sly
+    :defer t
+    :commands (sly)
+    :config
+    (setq inferior-lisp-program "sbcl"))
+#+end_src
+
+Docs:
+- [[https://www.sbcl.org/manual]]  
+- [[https://www.quicklisp.org/beta/]]
+- [[https://github.com/joaotavora/sly]]
+
+**** Clojure
+
+**** Prolog
+
+SWI Prolog:
+
+#+begin_src sh :tangle no :eval no
+  brew install swi-prolog
+#+END_SRC
+
+Built-in prolog-mode:
+
+#+begin_src emacs-lisp
+  (use-package prolog-mode
+    :ensure nil
+    :defer t
+    :mode ("\\.pl?\\'" . prolog-mode))
+#+end_src
+
+Docs:
+
+[[https://www.swi-prolog.org/pldoc/refman/]]
+
+**** Rust
+
+#+begin_src emacs-lisp
+  (use-package rust-mode
+    :defer t
+    :config
+    (setq rust-format-on-save t))
+#+end_src
+
+**** Go
+
+#+begin_src emacs-lisp
+  (use-package go-mode
+    :defer t
+    :config
+    (defun project-find-go-module (dir)
+      (when-let ((root (locate-dominating-file dir "go.mod")))
+	(cons 'go-module root)))
+
+    (cl-defmethod project-root ((project (head go-module)))
+      (cdr project))
+
+    (add-hook 'project-find-functions #'project-find-go-module)
+    (add-hook 'go-mode-hook (lambda () (setq-local compile-command "go build ")))
+    (add-hook 'go-mode-hook (lambda () (setq tab-width 4))))
+#+end_src
+
+**** C
+
+#+begin_src emacs-lisp
+  (use-package c-mode
+    :ensure nil
+    :defer t
+    :init (setq c-basic-offset 4)
+    :config
+    (add-hook 'c-mode-hook
+	      (lambda ()
+		(setq comment-start "//" comment-end ""))))
+#+end_src
+
+**** Python
+
+#+begin_src emacs-lisp
+  (use-package python
+    :ensure nil
+    :defer t
+    :hook (python-mode-hook . eldoc-mode))
+#+end_src
+
+*** Git
+
+**** Magit
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :defer t)
+#+end_src
+
+*** Prog Modes
+
+**** Line Numbers
+
+#+begin_src emacs-lisp
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+end_src
+
+**** Dockerfile
+
+#+begin_src emacs-lisp
+  (use-package dockerfile-mode
+    :defer t
+    :mode ("Dockerfile\\'" . dockerfile-mode))
+#+end_src
+
+**** ProtoBuf
+
+#+begin_src emacs-lisp
+  (use-package protobuf-mode
+    :defer t
+    :defer t)
+#+end_src
+
+**** YAML
+
+#+begin_src emacs-lisp
+  (use-package yaml-mode
+    :defer t
+    :mode ("\\.yml\\'" . yaml-mode))
+#+end_src
+
+**** Web HTML/JS
+
+#+begin_src emacs-lisp
+  (use-package web-mode
+    :defer t
+    :init
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
+#+end_src
+
+**** Rest Client
+
+#+begin_src emacs-lisp
+  (use-package restclient
+    :defer t
+    :init
+    (add-to-list 'auto-mode-alist '("\\.restclient\\'" . restclient-mode)))
+#+end_src
+
+**** DotEnv
+
+#+begin_src emacs-lisp
+  ;; (use-package dotenv
+  ;;   :quelpa
+  ;;   (dotenv :repo "pkulev/dotenv.el"
+  ;;           :fetcher github :upgrade t))
+#+end_src
+
+**** Shell
+
+#+begin_src emacs-lisp
+  (add-hook 'sh-mode-hook
+	(lambda ()
+	  (setq sh-basic-offset 2
+		sh-indentation 2)))
+#+end_src
+
+**** Snippets
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :defer t
+    :config
+    (yas-reload-all)
+    (add-hook 'prog-mode-hook #'yas-minor-mode))
+#+end_src
+
+*** Terminal
+
+**** VTerm
+
+[[https://github.com/akermu/emacs-libvterm]]
+
+#+begin_src emacs-lisp
+  (use-package vterm
+    :defer t
+    :config
+    (setq vterm-shell "/bin/zsh")
+    (setq vterm-disable-bold t))
+#+end_src
+
+**** Multi VTerm
+
+#+begin_src emacs-lisp
+  (use-package multi-vterm
+    :defer t
+    :bind ("C-c t" . multi-vterm))
+#+end_src
+
+*** Documents
+
+**** Prerequisites
+
+#+begin_src shell :tangle no :eval no
+  brew install pandoc
+  brew install graphviz
+  brew install grip
+  brew install aspell
+  brew install basictex
+#+end_src
+
+Make sure //Library/TeX/texbin/ is in the /PATH/.
+
+#+begin_src bash :tangle no :eval no
+  sudo tmlmgr update --self
+  sudo tlmgr install capt-of
+  sudo tlmgr install wrapfig
+#+end_src
+
+**** Browser
+
+#+begin_src emacs-lisp
+  (setq browse-url-browser-function 'xwidget-webkit-browse-url)
+#+end_src
+
+***** Search Google
+
+#+begin_src emacs-lisp
+  (defun google ()
+    (interactive)
+    (xwidget-webkit-browse-url "https://google.com"))
+#+end_src
+
+***** Search DuckDuckGo
+
+#+begin_src emacs-lisp
+  (defun duckduckgo ()
+    (interactive)
+    (xwidget-webkit-browse-url "https://duckduckgo.com"))
+#+end_src
+
+**** Render Markdown and Org Mode
+
+#+begin_src emacs-lisp
+  (use-package grip-mode
+    :defer t
+    :custom (grip-preview-use-webkit t))
+#+end_src
+
+#+begin_src shell :tangle no
+  touch ~/.authinfo
+  chmod 600 ~/.authinfo 
+#+end_src
+
+#+begin_src shell :tangle no
+  host api.github.com user ogimart password <github-api-token>
+#+end_src	
+
+#+begin_src emacs-lisp :tangle no
+  (use-package grip-mode
+    :defer t
+    :init
+    (require 'auth-source)
+    (let ((credentials (auth-source-user-and-password "api.github.com")))
+      (setq grip-github-user (car credentials)
+	    grip-github-password (cadr credentials)))
+    :custom
+    (grip-preview-use-webkit t))
+#+end_src
+
+**** Exported code blocks syntax highlighting
+
+#+begin_src emacs-lisp
+  (use-package htmlize
+    :defer t)
+#+end_src
+
+**** Spell Check
+
+#+begin_src emacs-lisp
+  (use-package flyspell
+    :ensure nil
+    :defer t
+    :custom
+    (ispell-program-name "aspell")
+    (aspell-dictionary "en_US-wo_accents")
+    (aspell-program-name "/opt/homebrew/bin/aspell")
+    (ispell-dictionary "en_US-wo_accents")
+    (ispell-program-name "/opt/homebrew/bin/aspell")
+    :config
+    ;; (define-key flyspell-mode-map [down-mouse-3] 'flyspell-correct-word)
+    (add-hook 'org-mode-hook 'flyspell-mode)
+    (add-hook 'org-mode-hook 'markdown-mode)
+    (add-hook 'TeX-mode-hook 'flyspell-mode))
+#+end_src
+
+**** Markdown
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :defer t
+    :commands (mardown-mode gfm-mode)
+    :mode (("\\.md\\'" . gfm-mode)
+	   ("\\.markdown\\'" . markdown-mode))
+    :init
+    (setq markdown-command "pandoc"))
+#+end_src
+
+**** GraphViz
+
+#+begin_src emacs-lisp
+  (use-package graphviz-dot-mode)
+    ;; :init
+    ;; (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot)))
+#+end_src
+
+# todo: https://plantuml.com/emacs
+
+**** Org Mode
+
+# TODO
+# (setq org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿"))
+# https://github.com/ofosos/ox-epub
+
+#+begin_src emacs-lisp
+  (use-package org
+    :ensure nil
+    :defer t
+    :config
+    ;; export
+    (require 'ox-md nil t)
+    (require 'ox-gfm nil t)
+    ;; theme
+    ;; (if (eq current-theme 'light)
+    ;;	(org-light-theme)
+    ;; (org-dark-theme))
+    (setq org-hide-emphasis-markers nil)
+    (setq org-src-fontify-natively t))
+
+  (use-package ox-gfm
+    :after org)
+#+end_src
+
+*** Key Bindings and Utils
+
+**** Utils
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :init
+    (which-key-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x k") 'kill-this-buffer)
+#+end_src
+
+**** Helper Functions
+
+***  Vim Emulator
+
+**** evil
+
+#+begin_src emacs-lisp
+  (use-package evil
+    :defer 3
+    :config
+    (setq evil-default-state 'emacs)
+    (setq evil-disable-insert-state-bindings t)
+    (evil-set-initial-state 'vterm-mode 'emacs)
+    (evil-set-initial-state 'shell-mode 'emacs)
+    (evil-set-initial-state 'eshell-mode 'emacs)
+    (evil-mode 0))
+#+end_src
+
+*** Custom Set Variables
+
+**** Emacs generated
+
+#+begin_src emacs-lisp
+  (setq custom-file (concat user-emacs-directory "custom.el"))
+  (load custom-file 'noerror)
+#+end_src
+
+# https://github.com/casouri/tree-sitter-module
