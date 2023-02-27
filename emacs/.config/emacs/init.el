@@ -22,6 +22,11 @@
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'meta))
 
+(use-package ns-auto-titlebar
+  :defer t
+  :init
+  (ns-auto-titlebar-mode))
+
 (defun semi-bold ()
   "Make bold weight semi-bold"
   (interactive)
@@ -31,10 +36,6 @@
 	(face-list)))
 
 (use-package modus-themes
-  :init
-  (defun custom-modus ()
-    (semi-bold))
-  (add-hook 'after-init-hook (lambda () (custom-modus)))
   :config
   (setq modus-themes-common-palette-overrides
 	`((fg-line-number-active "#adadad")
@@ -46,9 +47,33 @@
 	  (fringe "#ffffff")
 	  (cursor "#303030")
 	  ,@modus-themes-preset-overrides-faint))
-  (setq modus-themes-weights '(normal semibold))
-  (setenv "EMACS_THEME" "modus-operandi")
-  (load-theme 'modus-operandi t))
+  (setq modus-themes-weights '(normal semibold)))
+
+(use-package doom-themes
+  :config)
+
+(defun dark-theme ()
+  (interactive)
+  (mapc #'disable-theme custom-enabled-themes)
+  (load-theme 'doom-palenight t)
+  (set-face-attribute 'line-number-current-line nil
+		      :slant 'normal)
+  (set-face-attribute 'line-number nil :slant 'normal)
+  (add-hook 'org-mode-hook 'org-dark-theme)
+  (setenv "EMACS_THEME" "dark")
+  (semi-bold))
+
+(defun light-theme ()
+  (interactive)
+  (mapc #'disable-theme custom-enabled-themes)
+  (setenv "EMACS_THEME" "light")
+  (load-theme 'modus-operandi t)
+  (semi-bold))
+
+(dark-theme)
+;; (light-theme)
+(add-hook 'after-init-hook (lambda () (semi-bold)))
+(add-hook 'org-mode-hook (lambda () (semi-bold)))
 
 (use-package mood-line
   :init

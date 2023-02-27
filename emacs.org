@@ -58,7 +58,7 @@ For Emacs with native compilation (version >= 28.1):
       (menu-bar-mode 0))
   (setq default-frame-alist '((width . 160) (height . 42)))
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  (add-to-list 'default-frame-alist '(ns-appearance . light))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
   (setq ns-use-proxy-icon nil
 	ns-antialias t
 	ns-use-thin-smoothing nil)
@@ -69,8 +69,8 @@ For Emacs with native compilation (version >= 28.1):
 **** Fixed and Variable Pitch Fonts
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :family "MonoLisa"
-		      :height 130 :weight 'normal)
+  (set-face-attribute 'default nil :family "Source Code Pro"
+		      :height 150 :weight 'normal)
   (set-face-attribute 'variable-pitch nil :family "Helvetica Neue"
 		      :height 160 :weight 'normal)
 #+end_src
@@ -142,6 +142,15 @@ Use Option & Command as Meta
 
 *** Theme
 
+**** Title Bar
+
+#+begin_src emacs-lisp
+  (use-package ns-auto-titlebar
+    :defer t
+    :init
+    (ns-auto-titlebar-mode))
+#+end_src
+
 **** Theme Utils
 
 Make bold wieght semi-bold.
@@ -160,10 +169,6 @@ Make bold wieght semi-bold.
 
 #+begin_src emacs-lisp
   (use-package modus-themes
-    :init
-    (defun custom-modus ()
-      (semi-bold))
-    (add-hook 'after-init-hook (lambda () (custom-modus)))
     :config
     (setq modus-themes-common-palette-overrides
 	  `((fg-line-number-active "#adadad")
@@ -175,9 +180,49 @@ Make bold wieght semi-bold.
 	    (fringe "#ffffff")
 	    (cursor "#303030")
 	    ,@modus-themes-preset-overrides-faint))
-    (setq modus-themes-weights '(normal semibold))
-    (setenv "EMACS_THEME" "modus-operandi")
-    (load-theme 'modus-operandi t))
+    (setq modus-themes-weights '(normal semibold)))
+#+end_src
+
+**** Doom Themes
+
+#+begin_src emacs-lisp
+  (use-package doom-themes
+    :config)
+#+end_src
+
+**** Dark theme
+
+#+begin_src emacs-lisp
+  (defun dark-theme ()
+    (interactive)
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme 'doom-palenight t)
+    (set-face-attribute 'line-number-current-line nil
+			:slant 'normal)
+    (set-face-attribute 'line-number nil :slant 'normal)
+    (add-hook 'org-mode-hook 'org-dark-theme)
+    (setenv "EMACS_THEME" "dark")
+    (semi-bold))
+#+end_src
+
+**** Light Theme
+
+#+begin_src emacs-lisp
+  (defun light-theme ()
+    (interactive)
+    (mapc #'disable-theme custom-enabled-themes)
+    (setenv "EMACS_THEME" "light")
+    (load-theme 'modus-operandi t)
+    (semi-bold))
+#+end_src
+
+**** Default theme
+
+#+begin_src emacs-lisp
+  (dark-theme)
+  ;; (light-theme)
+  (add-hook 'after-init-hook (lambda () (semi-bold)))
+  (add-hook 'org-mode-hook (lambda () (semi-bold)))
 #+end_src
 
 *** Modeline
@@ -325,6 +370,12 @@ Docs:
     (add-hook 'project-find-functions #'project-find-go-module)
     (add-hook 'go-mode-hook (lambda () (setq-local compile-command "go build ")))
     (add-hook 'go-mode-hook (lambda () (setq tab-width 4))))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package go-tag
+    :defer t
+    :after go-mode)
 #+end_src
 
 **** C
