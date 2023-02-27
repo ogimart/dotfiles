@@ -52,7 +52,7 @@ My macOS dotfiles and development environment.
 
 *** Fonts
 
-- MonoLisa (fixed)
+- Source Code Pro (fixed)
 - Helvetica Neue (sans serif)
 
 *** Themes
