@@ -68,5 +68,5 @@ alias goland='open -na "GoLand.app" --args "$@"'
 
 if [[ "$INSIDE_EMACS" = 'vterm' ]] \
     && [[ -f ~/.config/zsh/vterm-zsh.sh ]]; then
-	source ~/.config/emacs/vterm-zsh.sh
+	source ~/.config/zsh/vterm-zsh.sh
 fi
