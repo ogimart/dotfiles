@@ -30,6 +30,8 @@ find_file() {
 alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
 alias ff='find_file'
 
-if [[ "$EMACS_THEME" == "modus-operandi" ]]; then
+if [[ "$EMACS_THEME" == "light" ]]; then
   export FZF_DEFAULT_OPTS="--color=16,bg:#ffffff,bg+:#ffffff"
+else
+  export FZF_DEFAULT_OPTS="--color=16,bg:black,bg+:black"    
 fi
