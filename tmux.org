@@ -1,4 +1,4 @@
-#+TITLE: My macOS dotfiles - tmux
+#+TITLE: My macOS dotfiles
 #+AUTHOR: Ogi Martinovic
 #+OPTIONS: num:nil
 
