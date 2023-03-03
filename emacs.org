@@ -117,6 +117,7 @@ For Emacs with native compilation (version >= 28.1):
 #+begin_src emacs-lisp
   (require 'package)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
   (setq package-native-compile t)
 #+end_src
 
