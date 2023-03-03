@@ -45,6 +45,7 @@ My macOS dotfiles and development environment.
 *** Doc Utilities
 
 - pandoc
+- plantuml
 - graphviz
 - aspell
 - grip
@@ -52,14 +53,14 @@ My macOS dotfiles and development environment.
 
 *** Fonts
 
-- Source Code Pro (fixed)
-- Helvetica Neue (sans serif)
+- Monospaced: [[https://github.com/adobe-fonts/source-code-pro][Adobe Source Code Pro]]
+- Variable: [[https://github.com/adobe-fonts/source-sans][Adobe Source Sans]]
 
 *** Themes
 
-- Emacs: Modus Operandi
-- iTerm2: Tinted Theming tokyo-night-storm
-- NeoVim: tokyonight.nvim
+- Emacs: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
+- iTerm2: [[https://github.com/tinted-theming/base16-iterm2][Tinted Theming tokyo-night-dark]]
+- NeoVim: [[https://github.com/folke/tokyonight.nvim][tokyonight.nvim]]
 
 ** Configuration
 
@@ -91,13 +92,4 @@ The config files are generated from Emacs's org-mode babel (tangle: /C-c C-v t/)
   stow emacs
   stow zsh
   stow tmux
-#+end_src
-
-*** Themes
-
-#+begin_src shell :eval no
-mkdir -p ~/.config/themes
-git clone https://github.com/tinted-theming/base16-iterm2.git ~/.config/themes/base16-iterm2
-git clone https://github.com/tinted-theming/base16-fzf.git ~/.config/themes/base16-fzf
-git clone https://github.com/tinted-theming/base16-tmux.git ~/.config/themes/base16-tmux
 #+end_src
