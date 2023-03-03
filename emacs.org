@@ -2,7 +2,7 @@
 #+AUTHOR: Ogi Martinovic
 #+OPTIONS: num:nil
 
-#+TOC: 
+#+TOC:
 
 * Emacs
 
@@ -16,7 +16,7 @@ Tested on Emacs 29.0.60, macOS emacs-plus distribution.
 
 #+begin_src shell :tangle no :eval no
   brew tap d12frosted/emacs-plus
-  brew install emacs-plus@29 --with-native-comp --with-xwidgets --with-elrumo2-icon
+  brew install emacs-plus@29 --with-native-comp --with-poll --with-xwidgets --with-elrumo2-icon
 #+end_src
 
 ** Early Init File
@@ -24,7 +24,7 @@ Tested on Emacs 29.0.60, macOS emacs-plus distribution.
 :header-args: :tangle ~/.dotfiles/emacs/.config/emacs/early-init.el :eval no
 :end:
 
-**** About
+**** Preamble
 
 #+begin_src emacs-lisp
   ;;;; early-init.el
@@ -37,7 +37,6 @@ Tested on Emacs 29.0.60, macOS emacs-plus distribution.
 
 For Emacs with native compilation (version >= 28.1):
 
-
 #+begin_src emacs-lisp
   (setq native-comp-speed 2
         native-comp-jit t
@@ -48,6 +47,7 @@ For Emacs with native compilation (version >= 28.1):
 
 #+begin_src emacs-lisp
   (setq inhibit-splash-screen t)
+  (setq initial-scratch-message ";; Emacs Lisp\n\n")
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
   (delete-selection-mode 1)
@@ -56,23 +56,34 @@ For Emacs with native compilation (version >= 28.1):
   (setq column-number-mode t)
   (if (not (display-graphic-p))
       (menu-bar-mode 0))
-  (setq default-frame-alist '((width . 160) (height . 42)))
+  (setq default-frame-alist '((width . 128) (height . 42)))
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
   (add-to-list 'default-frame-alist '(ns-appearance . dark))
   (setq ns-use-proxy-icon nil
 	ns-antialias t
 	ns-use-thin-smoothing nil)
   (pixel-scroll-precision-mode)
-  ;; (setq x-underline-at-descent-line t)
+  (setq x-underline-at-descent-line t)
+#+end_src
+
+**** Visible Bell
+
+#+begin_src emacs-lisp
+  (setq visible-bell nil
+	ring-bell-function 'flash-mode-line)
+
+  (defun flash-mode-line ()
+    (invert-face 'mode-line)
+    (run-with-timer 0.1 nil #'invert-face 'mode-line))
 #+end_src
 
 **** Fixed and Variable Pitch Fonts
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :family "Source Code Pro"
-		      :height 150 :weight 'normal)
-  (set-face-attribute 'variable-pitch nil :family "Helvetica Neue"
-		      :height 160 :weight 'normal)
+  (set-face-attribute 'default nil :family "Source Code Pro" :height 140 :weight 'normal)
+  (set-face-attribute 'variable-pitch nil :family "Source Sans 3" :height 1.1)
+  (set-face-attribute 'fixed-pitch nil :family (face-attribute 'default :family))
+  (set-face-attribute 'bold nil :weight 'medium)
 #+end_src
 
 ** Init File
@@ -80,7 +91,7 @@ For Emacs with native compilation (version >= 28.1):
 :header-args: :tangle ~/.dotfiles/emacs/.config/emacs/init.el :eval no
 :end:
 
-**** About
+**** Preamble
 
 #+begin_src emacs-lisp
   ;;;; init.el
@@ -94,7 +105,7 @@ For Emacs with native compilation (version >= 28.1):
 **** Threshold
 
 #+begin_src emacs-lisp
-  (setq gc-cons-threshold (* 2 1024 1024))
+  (setq gc-cons-threshold (* 4 1024 1024))
 #+end_src
 
 *** Package Manager
@@ -120,12 +131,31 @@ For Emacs with native compilation (version >= 28.1):
 
 *** Files and Backup
 
+**** Autorevert
+
+Automatically reload files modified by external programs.
+
+#+begin_src emacs-lisp
+  (global-auto-revert-mode 1)
+#+end_src
+
 **** Backup
 
 #+begin_src emacs-lisp
   (setq user-emacs-diructory "~/.cache/emacs/")
   (setq make-backup-files t)
   (setq backup-directory-alist '(("." . "~/.cache/emacs/backups/")))
+#+end_src
+
+**** Read File
+
+#+begin_src emacs-lisp
+  (defun read-lines (file-name)
+    (if (file-exists-p file-name)
+	(with-temp-buffer
+	  (insert-file-contents file-name)
+	  (split-string (buffer-string) "\n" t))
+      nil))
 #+end_src
 
 *** Meta Keys
@@ -151,88 +181,81 @@ Use Option & Command as Meta
     (ns-auto-titlebar-mode))
 #+end_src
 
-**** Theme Utils
+**** Font Utils
 
 Make bold wieght semi-bold.
 
 #+begin_src emacs-lisp
-  (defun semi-bold ()
-    "Make bold weight semi-bold"
+  (defun font-weight ()
+    "Normal weight font"
     (interactive)
-    (mapc (lambda (face)
-	    (when (eq (face-attribute face :weight) 'bold)
-	      (set-face-attribute face nil :weight 'semi-bold)))
-	  (face-list)))
+    (set-face-attribute 'default nil :weight 'normal)
+    (set-face-attribute 'bold nil :weight 'medium))
 #+end_src
 
-**** Modus Operandi Theme
+#+begin_src emacs-lisp
+  (defun font-size (size)
+    (interactive "nFont size in pt: ")
+    (let ((height (* size 10)))
+	(set-face-attribute 'default nil :height height)
+	(set-face-attribute 'bold nil :height height)))
+#+end_src
+
+#+begin_src emacs-lisp
+  (add-hook 'after-init-hook (lambda () (font-weight)))
+  (add-hook 'org-mode-hook (lambda () (font-weight)))
+#+end_src
+
+**** Modus Themes
 
 #+begin_src emacs-lisp
   (use-package modus-themes
-    :config
+    :bind ("<f5>" . modus-themes-toggle)
+    :init
+    (require 'modus-themes)
+    (add-hook 'modus-themes-after-load-theme-hook
+	      (lambda ()
+		(if (string= (modus-themes--current-theme) "modus-operandi")
+		    (setenv "EMACS_THEME" "light")
+		  (setenv "EMACS_THEME" "dark"))
+		(font-weight)
+		(set-face-attribute 'line-number-current-line nil
+				    :slant 'normal :bold nil)
+		(set-face-attribute 'line-number nil
+				    :slant 'normal :bold nil)))
+    (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
+    (setq modus-themes-weights '(normal semibold)
+	  modus-themes-disable-other-themes t)
     (setq modus-themes-common-palette-overrides
-	  `((fg-line-number-active "#adadad")
-	    (fg-line-number-inactive "#cdcdcd")
-	    (bg-line-number-active "#ffffff")
-	    (bg-line-number-inactive "ffffff")
-	    (fg-region nil)
-	    (bg-region "#e6e6e6")
-	    (fringe "#ffffff")
-	    (cursor "#303030")
-	    ,@modus-themes-preset-overrides-faint))
-    (setq modus-themes-weights '(normal semibold)))
-#+end_src
-
-**** Doom Themes
-
-#+begin_src emacs-lisp
-  (use-package doom-themes
-    :config)
-#+end_src
-
-**** Dark theme
-
-#+begin_src emacs-lisp
-  (defun dark-theme ()
-    (interactive)
-    (mapc #'disable-theme custom-enabled-themes)
-    (load-theme 'doom-palenight t)
-    (set-face-attribute 'line-number-current-line nil
-			:slant 'normal)
-    (set-face-attribute 'line-number nil :slant 'normal)
-    (add-hook 'org-mode-hook 'org-dark-theme)
-    (setenv "EMACS_THEME" "dark")
-    (semi-bold))
-#+end_src
-
-**** Light Theme
-
-#+begin_src emacs-lisp
-  (defun light-theme ()
-    (interactive)
-    (mapc #'disable-theme custom-enabled-themes)
-    (setenv "EMACS_THEME" "light")
-    (load-theme 'modus-operandi t)
-    (semi-bold))
-#+end_src
-
-**** Default theme
-
-#+begin_src emacs-lisp
-  (dark-theme)
-  ;; (light-theme)
-  (add-hook 'after-init-hook (lambda () (semi-bold)))
-  (add-hook 'org-mode-hook (lambda () (semi-bold)))
+	  '((fg-region unspecified)
+	    (bg-region bg-mode-line-inactive)
+	    (bg-line-number-active bg-default)
+	    (bg-line-number-inactive bg-default)
+	    (fg-line-number-active bg-active)
+	    (fg-line-number-inactive bg-inactive)
+	    (bg-paren-match bg-mode-line-active)
+	    (fringe bg-default)))
+    (setq modus-operandi-palette-overrides
+	  `((cursor "black")
+	    (bg-paren-match bg-mode-line-inactive)
+	    (bg-mode-line-active bg-blue-subtle)
+	    ,@modus-themes-common-palette-overrides))
+    (setq modus-vivendi-palette-overrides
+	  `((cursor "white")
+	    (bg-paren-match bg-mode-line-active)
+	    ,@modus-themes-common-palette-overrides))
+    :config
+    (modus-themes-load-theme (car modus-themes-to-toggle)))
 #+end_src
 
 *** Modeline
 
-**** Mood Modeline
+**** Diminish
 
 #+begin_src emacs-lisp
-  (use-package mood-line
+  (use-package diminish
     :init
-    (mood-line-mode))
+    (diminish 'eldoc-mode))
 #+end_src
 
 *** Minibuffer
@@ -275,10 +298,22 @@ Make bold wieght semi-bold.
 **** Company Completion
 
 #+begin_src emacs-lisp
-  (use-package company
-    :defer 3
-    :config
-    (global-company-mode))
+  ;; (use-package company
+  ;;   :defer 3
+  ;;   :config
+  ;;   (global-company-mode))
+#+end_src
+
+**** Corfu Completion
+
+#+begin_src emacs-lisp
+  (use-package corfu
+    :init
+    (require 'corfu-popupinfo)
+    (global-corfu-mode)
+    (corfu-popupinfo-mode)
+    :custom
+    (corfu-auto t))
 #+end_src
 
 **** EGlot LSP
@@ -318,11 +353,31 @@ Sly package:
 #+end_src
 
 Docs:
-- [[https://www.sbcl.org/manual]]  
+- [[https://www.sbcl.org/manual]]
 - [[https://www.quicklisp.org/beta/]]
 - [[https://github.com/joaotavora/sly]]
 
 **** Clojure
+
+#+begin_src emacs-lisp
+  (use-package clojure-mode
+    :defer t)
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package cider
+    :defer t
+    :init
+    (setq safe-local-variable-values '((cider-clojure-cli-aliases . "dev")
+				       (cider-clojure-cli-command . "clojure")))
+    :config
+    (setq cider-repl-use-clojure-font-lock t)
+    ;; (setq nrepl-hide-special-buffers t)
+    ;; (setq cider-overlays-use-font-lock t)
+    (setq cider-use-overlays nil)
+    ;; (setq cider-show-error-buffer nil)
+    (setq cider-eldoc-display-for-symbol-at-point t))
+#+end_src
 
 **** Prolog
 
@@ -411,10 +466,29 @@ Docs:
 
 *** Prog Modes
 
+# todo: https://github.com/casouri/tree-sitter-module
+
 **** Line Numbers
 
 #+begin_src emacs-lisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+end_src
+
+**** Smart Parens
+
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :config
+    (require 'smartparens-config)
+    (global-set-key (kbd "M-o (") 'sp-wrap-round)
+    (global-set-key (kbd "M-o [") 'sp-wrap-square)
+    (global-set-key (kbd "M-o {") 'sp-wrap-curly)
+    (global-set-key (kbd "M-o r") 'sp-rewrap-sexp)
+    (global-set-key (kbd "M-o w") 'sp-unwrap-sexp)
+    (global-set-key (kbd "M-o f") 'sp-forward-sexp)
+    (global-set-key (kbd "M-o b") 'sp-backward-sexp)
+    (global-set-key (kbd "M-o u") 'sp-up-sexp)
+    (global-set-key (kbd "M-o d") 'sp-down-sexp))
 #+end_src
 
 **** Dockerfile
@@ -441,6 +515,13 @@ Docs:
     :mode ("\\.yml\\'" . yaml-mode))
 #+end_src
 
+**** HashiCorp HCL
+
+#+begin_src emacs-lisp
+  (use-package hcl-mode
+    :defer t)
+#+end_src
+
 **** Web HTML/JS
 
 #+begin_src emacs-lisp
@@ -460,6 +541,8 @@ Docs:
 #+end_src
 
 **** DotEnv
+
+Todo
 
 #+begin_src emacs-lisp
   ;; (use-package dotenv
@@ -487,6 +570,138 @@ Docs:
     (add-hook 'prog-mode-hook #'yas-minor-mode))
 #+end_src
 
+*** Eshell
+
+**** Git
+
+#+begin_src emacs-lisp
+  (defun eshell/gst (&rest args)
+      (magit-status (pop args) nil)
+      (eshell/echo))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun git-prompt-branch-name ()
+    (let ((args '("symbolic-ref" "HEAD" "--short")))
+      (with-temp-buffer
+	(apply #'process-file "git" nil (list t nil) nil args)
+	(unless (bobp)
+	  (goto-char (point-min))
+	  (buffer-substring-no-properties (point) (line-end-position))))))
+#+end_src
+
+**** Prompt
+
+#+begin_src emacs-lisp
+  (defun pwd-replace-home (pwd)
+    "Replace home in PWD with tilde (~) character."
+    (interactive)
+    (let* ((home (expand-file-name (getenv "HOME")))
+	   (home-len (length home)))
+      (if (and
+	   (>= (length pwd) home-len)
+	   (equal home (substring pwd 0 home-len)))
+	  (concat "~" (substring pwd home-len))
+	pwd)))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun pwd-shorten-dirs (pwd)
+    "Shorten all directory names in PWD except the last two."
+    (let ((p-lst (split-string pwd "/")))
+      (if (> (length p-lst) 3)
+	  (concat "~/.../"
+		  (mapconcat (lambda (elm) elm)
+			     (last p-lst 2)
+			     "/"))
+	pwd)))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defmacro with-face (str &rest properties)
+    `(propertize ,str 'face (list ,@properties)))
+
+  (defun esh-prompt-fn ()
+    (let ((branch-name (git-prompt-branch-name))
+	  (prompt-path (pwd-shorten-dirs (pwd-replace-home (eshell/pwd))))
+	  (default-fg (face-attribute 'default :foreground))
+	  (branch-fg (face-attribute 'modus-themes-fg-cyan :foreground))
+	  (path-fg (face-attribute 'modus-themes-fg-blue :foreground)))
+      (concat (with-face "[" :foreground default-fg)
+	      (with-face prompt-path :foreground path-fg)
+	      (if branch-name
+		  (with-face (concat " " branch-name) :foreground branch-fg)
+		"")
+	      (with-face "] $" :foreground default-fg)
+	      (with-face " " :foreground default-fg))))
+#+end_src
+
+**** Eshell Mode
+
+#+begin_src emacs-lisp
+  (use-package eshell
+    :ensure nil
+    :defer t
+    :bind (("C-c e" . eshell)
+	   ("C-c C-r" . consult-eshell-history))
+    :init
+    (setq eshell-hist-ignoredups t
+	  eshell-save-history-on-exit t
+	  eshell-destroy-buffer-when-process-dies t)
+    (add-hook 'eshell-mode-hook
+	      (lambda ()
+		;; aliases
+		(eshell/alias "ff" "find-file $1")
+		(eshell/alias "ee" "find-file-other-window $1")
+		(eshell/alias "gd" "magit-diff-unstaged")
+		(eshell/alias "gds" "magit-diff-staged")
+		(eshell/alias "bat" "bat --theme=base16")
+		(eshell/alias "ll" "exa -al --git --sort=type --time-style=long-iso")
+		(eshell/alias "tree" "exa -a --tree --sort=type --ignore-glob='.git|.idea|.vscode'")
+		;; visaul commands
+		(add-to-list 'eshell-visual-commands "bat")
+		(add-to-list 'eshell-visual-commands "ssh")
+		(add-to-list 'eshell-visual-commands "tail")))
+    :config
+    (setq eshell-prompt-function #'esh-prompt-fn))
+#+end_src
+
+**** History
+
+#+begin_src emacs-lisp
+  (defun eshell-history-list ()
+    "return the eshell history as a list"
+    (and (or (not (ring-p eshell-history-ring))
+	     (ring-empty-p eshell-history-ring))
+	 (error "No history"))
+    (let* ((index (1- (ring-length eshell-history-ring)))
+	   (ref (- (ring-length eshell-history-ring) index))
+	   (items (list)))
+      (while (>= index 0)
+	(setq items (cons (format "%s" (eshell-get-history index)) items)
+	      index (1- index)
+	      ref (1+ ref)))
+      items))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun consult-eshell-history ()
+    "Eshell History"
+    (interactive)
+    "Insert eshell command from history"
+    (let ((cmd (completing-read "Select eshell command: "
+				(eshell-history-list))))
+      (insert cmd)))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package esh-mode
+  :ensure nil
+  :defer t
+  :bind (:map eshell-mode-map
+	      ("C-c C-r" . consult-eshell-history)))
+#+end_src
+
 *** Terminal
 
 **** VTerm
@@ -496,8 +711,9 @@ Docs:
 #+begin_src emacs-lisp
   (use-package vterm
     :defer t
-    :config
+    :init
     (setq vterm-shell "/bin/zsh")
+    (setq vterm-term-environment-variable "eterm-color")
     (setq vterm-disable-bold t))
 #+end_src
 
@@ -507,6 +723,37 @@ Docs:
   (use-package multi-vterm
     :defer t
     :bind ("C-c t" . multi-vterm))
+#+end_src
+
+*** SQL
+
+**** PostgreSQL
+
+#+begin_src emacs-lisp
+  (use-package sql-mode
+    :ensure nil
+    :defer t
+    :bind ("C-c q" . sql-connect)
+    :init
+    (defun psql:connection-alist (pgpass)
+      (let ((value))
+	(dolist (element pgpass value)
+	  (setq srv-element (split-string element ":"))
+	  (setq value (cons (list (intern (nth 0 srv-element))
+				  `(sql-server ,(nth 0 srv-element))
+				  `(sql-port ,(string-to-number
+					       (nth 1 srv-element)))
+				  `(sql-database ,(nth 2 srv-element))
+				  `(sql-user ,(nth 3 srv-element))
+				  `(sql-password ,(nth 4 srv-element)))
+			    value)))))
+    (setq sql-product 'postgres)
+    (setq sql-connection-alist
+	  (reverse (psql:connection-alist (read-lines "~/.pgpass"))))
+    (add-hook 'sql-interactive-mode-hook
+	      (lambda ()
+		(toggle-truncate-lines t)
+		(sql-highlight-postgres-keywords))))
 #+end_src
 
 *** Documents
@@ -561,12 +808,12 @@ Make sure //Library/TeX/texbin/ is in the /PATH/.
 
 #+begin_src shell :tangle no
   touch ~/.authinfo
-  chmod 600 ~/.authinfo 
+  chmod 600 ~/.authinfo
 #+end_src
 
 #+begin_src shell :tangle no
   host api.github.com user ogimart password <github-api-token>
-#+end_src	
+#+end_src
 
 #+begin_src emacs-lisp :tangle no
   (use-package grip-mode
@@ -659,12 +906,18 @@ Make sure //Library/TeX/texbin/ is in the /PATH/.
 
 #+begin_src emacs-lisp
   (use-package which-key
+    :diminish
     :init
     (which-key-mode))
 #+end_src
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x k") 'kill-this-buffer)
+  (global-set-key (kbd "C-c w") 'delete-trailing-whitespace)
+
+  (setq scroll-preserve-screen-position 1)
+  (global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
+  (global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
 #+end_src
 
 **** Helper Functions
@@ -693,5 +946,3 @@ Make sure //Library/TeX/texbin/ is in the /PATH/.
   (setq custom-file (concat user-emacs-directory "custom.el"))
   (load custom-file 'noerror)
 #+end_src
-
-# https://github.com/casouri/tree-sitter-module

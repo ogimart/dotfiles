@@ -9,3 +9,5 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 export GOPATH="$(go env GOPATH)"
 
 source "$HOME/.cargo/env"
+
+export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"

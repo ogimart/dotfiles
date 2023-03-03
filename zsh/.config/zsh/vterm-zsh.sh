@@ -33,5 +33,5 @@ alias ff='find_file'
 if [[ "$EMACS_THEME" == "light" ]]; then
   export FZF_DEFAULT_OPTS="--color=16,bg:#ffffff,bg+:#ffffff"
 else
-  export FZF_DEFAULT_OPTS="--color=16,bg:black,bg+:black"    
+  export FZF_DEFAULT_OPTS="--color=16,bg:#000000,bg+:#000000"
 fi

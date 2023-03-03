@@ -96,19 +96,19 @@
 #+begin_src shell
   zstyle ':vcs_info:git:*' formats $' %F{cyan}%b%u%c%f'
   zstyle ':vcs_info:git:*' actionformats 'g:%b|%a%u%c'
-  zstyle ':vcs_info:*' check-for-changes true
+  zstyle ':vcs_info:*' check-for-changes false
   zstyle ':vcs_info:*' unstagedstr ':*'
   zstyle ':vcs_info:*' stagedstr ':+'
 
   export VIRTUAL_ENV_DISABLE_PROMPT=0
 
   function venv_info {
-      [ $VIRTUAL_ENV ] && echo '%F{blue}'`basename $VIRTUAL_ENV`'%f '
+      [ $VIRTUAL_ENV ] && echo '%F{magenta}'`basename $VIRTUAL_ENV`'%f '
   }
 
   PS1='%F{white}[%f'
   PS1+='$(venv_info)'
-  PS1+='%F{magenta}%(4~|.../%2~|%~)%f'
+  PS1+='%F{blue}%(4~|~/.../%2~|%~)%f'
   PS1+='${vcs_info_msg_0_}'
   PS1+=$'%F{white}]>%f '
   RPROMPT=''
@@ -136,7 +136,7 @@
   export VISUAL=vi
   export LANG=en_US.UTF-8
   export LC_ALL=en_US.UTF-8
-  export TERM=xterm-256color
+  # export TERM=xterm-256color
 #+end_src
 
 **** FZF
@@ -150,8 +150,9 @@
 **** Aliases
 
 #+begin_src shell
-  alias ll='exa -gal --git --sort=type --time-style=long-iso'
-  alias tree='exa -a --tree --sort=type --ignore-glob=.git'
+  alias ll='ls -TGhal'
+  alias gll='exa -al --git --sort=type --time-style=long-iso'
+  alias tree='exa -a --tree --sort=type --ignore-glob=."git|.idea"'
   alias bat='bat --theme=base16'
   alias vi='nvim'
   alias em='emacs $@'
@@ -166,7 +167,8 @@
 #+begin_src shell
   if [[ "$INSIDE_EMACS" = 'vterm' ]] \
       && [[ -f ~/.config/zsh/vterm-zsh.sh ]]; then
-	  source ~/.config/zsh/vterm-zsh.sh
+    export TERM=eterm-color
+    source ~/.config/zsh/vterm-zsh.sh
   fi
 #+end_src
 
@@ -201,6 +203,12 @@
 
 #+begin_src shell
   source "$HOME/.cargo/env"
+#+end_src
+
+**** PostgreSQL
+
+#+begin_src shell
+  export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 #+end_src
 
 *** vterm-zsh
@@ -266,6 +274,6 @@
   if [[ "$EMACS_THEME" == "light" ]]; then
     export FZF_DEFAULT_OPTS="--color=16,bg:#ffffff,bg+:#ffffff"
   else
-    export FZF_DEFAULT_OPTS="--color=16,bg:black,bg+:black"
+    export FZF_DEFAULT_OPTS="--color=16,bg:#000000,bg+:#000000"
   fi
 #+end_src
