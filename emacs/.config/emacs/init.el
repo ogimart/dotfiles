@@ -7,6 +7,7 @@
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
 (setq package-native-compile t)
 
 (require 'use-package)
@@ -133,6 +134,9 @@
   :config
   (setq inferior-lisp-program "sbcl"))
 
+(use-package racket-mode
+  :defer t)
+
 (use-package clojure-mode
   :defer t)
 
@@ -191,23 +195,18 @@
   :defer t
   :hook (python-mode-hook . eldoc-mode))
 
-(use-package magit
-  :defer t)
-
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-
 (use-package smartparens
-   :config
-   (require 'smartparens-config)
-   (global-set-key (kbd "M-o (") 'sp-wrap-round)
-   (global-set-key (kbd "M-o [") 'sp-wrap-square)
-   (global-set-key (kbd "M-o {") 'sp-wrap-curly)
-   (global-set-key (kbd "M-o r") 'sp-rewrap-sexp)
-   (global-set-key (kbd "M-o w") 'sp-unwrap-sexp)
-   (global-set-key (kbd "M-o f") 'sp-forward-sexp)
-   (global-set-key (kbd "M-o b") 'sp-backward-sexp)
-   (global-set-key (kbd "M-o u") 'sp-up-sexp)
-   (global-set-key (kbd "M-o d") 'sp-down-sexp))
+  :config
+  (require 'smartparens-config)
+  (global-set-key (kbd "M-o (") 'sp-wrap-round)
+  (global-set-key (kbd "M-o [") 'sp-wrap-square)
+  (global-set-key (kbd "M-o {") 'sp-wrap-curly)
+  (global-set-key (kbd "M-o r") 'sp-rewrap-sexp)
+  (global-set-key (kbd "M-o w") 'sp-unwrap-sexp)
+  (global-set-key (kbd "M-o f") 'sp-forward-sexp)
+  (global-set-key (kbd "M-o b") 'sp-backward-sexp)
+  (global-set-key (kbd "M-o u") 'sp-up-sexp)
+  (global-set-key (kbd "M-o d") 'sp-down-sexp))
 
 (use-package dockerfile-mode
   :defer t

@@ -358,6 +358,21 @@ Docs:
 - [[https://www.quicklisp.org/beta/]]
 - [[https://github.com/joaotavora/sly]]
 
+
+**** Scheme / Racket
+
+Racket
+
+#+begin_src shell :tangle no :eval no
+  brew install minimal-racket
+  raco pkg install --auto drracket
+#+END_SRC
+
+#+begin_src emacs-lisp
+  (use-package racket-mode
+    :defer t)
+#+end_src
+
 **** Clojure
 
 #+begin_src emacs-lisp
