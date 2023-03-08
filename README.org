@@ -14,13 +14,17 @@ and [[https://www.gnu.org/software/stow/manual/][gnu stow]] (see the details in 
 *** Editors
 
 - Emacs (main editor/environment)
-- NeoVim
+- mg (microEmacs)
 
-*** Shell and Terminals
+*** Terminals
+
+- iTerm2
+- VTerm (emacs)
+
+*** Shells
 
 - zsh
-- VTerm (emacs)
-- iTerm2
+- eshell (emacs)
 
 *** Languages
 

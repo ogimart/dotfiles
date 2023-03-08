@@ -80,7 +80,7 @@ For Emacs with native compilation (version >= 28.1):
 **** Fixed and Variable Pitch Fonts
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :family "Source Code Pro" :height 140 :weight 'normal)
+  (set-face-attribute 'default nil :family "Source Code Pro" :height 150 :weight 'normal)
   (set-face-attribute 'variable-pitch nil :family "Source Sans 3" :height 1.1)
   (set-face-attribute 'fixed-pitch nil :family (face-attribute 'default :family))
   (set-face-attribute 'bold nil :weight 'medium)
@@ -184,7 +184,7 @@ Use Option & Command as Meta
 
 **** Font Utils
 
-Make bold wieght semi-bold.
+Adjust bold wieght.
 
 #+begin_src emacs-lisp
   (defun font-weight ()
