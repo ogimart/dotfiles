@@ -1,9 +1,0 @@
-#+TITLE: My macOS dotfiles
-#+AUTHOR: Ogi Martinovic
-#+OPTIONS: num:nil
-
-#+TOC: 
-
-* NeoVim
-
-TODO
