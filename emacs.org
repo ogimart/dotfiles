@@ -1,3 +1,4 @@
+
 #+TITLE: My macOS dotfiles
 #+AUTHOR: Ogi Martinovic
 #+OPTIONS: num:nil
@@ -360,6 +361,13 @@ Docs:
 
 
 **** Scheme / Racket
+
+Chez Scheme
+
+#+begin_src emacs-lisp
+  (use-package geiser-chez
+    :defer t)
+#+end_src
 
 Racket
 

@@ -23,7 +23,7 @@
 
 (defun read-lines (file-name)
   (if (file-exists-p file-name)
-      (with-temp-buffer
+  (with-temp-buffer
 	(insert-file-contents file-name)
 	(split-string (buffer-string) "\n" t))
     nil))
@@ -46,8 +46,8 @@
 (defun font-size (size)
   (interactive "nFont size in pt: ")
   (let ((height (* size 10)))
-      (set-face-attribute 'default nil :height height)
-      (set-face-attribute 'bold nil :height height)))
+  (set-face-attribute 'default nil :height height)
+  (set-face-attribute 'bold nil :height height)))
 
 (add-hook 'after-init-hook (lambda () (font-weight)))
 (add-hook 'org-mode-hook (lambda () (font-weight)))
@@ -58,13 +58,13 @@
   (require 'modus-themes)
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
-	      (if (string= (modus-themes--current-theme) "modus-operandi")
+	  (if (string= (modus-themes--current-theme) "modus-operandi")
 		  (setenv "EMACS_THEME" "light")
 		(setenv "EMACS_THEME" "dark"))
-	      (font-weight)
-	      (set-face-attribute 'line-number-current-line nil
+	  (font-weight)
+	  (set-face-attribute 'line-number-current-line nil
 				  :slant 'normal :bold nil)
-	      (set-face-attribute 'line-number nil
+	  (set-face-attribute 'line-number nil
 				  :slant 'normal :bold nil)))
   (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
   (setq modus-themes-weights '(normal semibold)
@@ -134,6 +134,9 @@
   :config
   (setq inferior-lisp-program "sbcl"))
 
+(use-package geiser-chez
+  :defer t)
+
 (use-package racket-mode
   :defer t)
 
@@ -168,7 +171,7 @@
   :config
   (defun project-find-go-module (dir)
     (when-let ((root (locate-dominating-file dir "go.mod")))
-      (cons 'go-module root)))
+  (cons 'go-module root)))
 
   (cl-defmethod project-root ((project (head go-module)))
     (cdr project))
@@ -188,12 +191,17 @@
   :config
   (add-hook 'c-mode-hook
 	    (lambda ()
-	      (setq comment-start "//" comment-end ""))))
+	  (setq comment-start "//" comment-end ""))))
 
 (use-package python
   :ensure nil
   :defer t
   :hook (python-mode-hook . eldoc-mode))
+
+(use-package magit
+  :defer t)
+
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 (use-package smartparens
   :config
@@ -239,9 +247,9 @@
 ;;           :fetcher github :upgrade t))
 
 (add-hook 'sh-mode-hook
-      (lambda ()
+  (lambda ()
 	(setq sh-basic-offset 2
-	      sh-indentation 2)))
+	  sh-indentation 2)))
 
 (use-package yasnippet
   :defer t
@@ -256,8 +264,8 @@
 (defun git-prompt-branch-name ()
   (let ((args '("symbolic-ref" "HEAD" "--short")))
     (with-temp-buffer
-      (apply #'process-file "git" nil (list t nil) nil args)
-      (unless (bobp)
+  (apply #'process-file "git" nil (list t nil) nil args)
+  (unless (bobp)
 	(goto-char (point-min))
 	(buffer-substring-no-properties (point) (line-end-position))))))
 
@@ -270,7 +278,7 @@
 	 (>= (length pwd) home-len)
 	 (equal home (substring pwd 0 home-len)))
 	(concat "~" (substring pwd home-len))
-      pwd)))
+  pwd)))
 
 (defun pwd-shorten-dirs (pwd)
   "Shorten all directory names in PWD except the last two."
@@ -280,7 +288,7 @@
 		(mapconcat (lambda (elm) elm)
 			   (last p-lst 2)
 			   "/"))
-      pwd)))
+  pwd)))
 
 (defmacro with-face (str &rest properties)
   `(propertize ,str 'face (list ,@properties)))
@@ -295,7 +303,7 @@
 	    (with-face prompt-path :foreground path-fg)
 	    (if branch-name
 		(with-face (concat " " branch-name) :foreground branch-fg)
-	      "")
+	  "")
 	    (with-face "] $" :foreground default-fg)
 	    (with-face " " :foreground default-fg))))
 
@@ -310,18 +318,18 @@
 	eshell-destroy-buffer-when-process-dies t)
   (add-hook 'eshell-mode-hook
 	    (lambda ()
-	      ;; aliases
-	      (eshell/alias "ff" "find-file $1")
-	      (eshell/alias "ee" "find-file-other-window $1")
-	      (eshell/alias "gd" "magit-diff-unstaged")
-	      (eshell/alias "gds" "magit-diff-staged")
-	      (eshell/alias "bat" "bat --theme=base16")
-	      (eshell/alias "ll" "exa -al --git --sort=type --time-style=long-iso")
-	      (eshell/alias "tree" "exa -a --tree --sort=type --ignore-glob='.git|.idea|.vscode'")
-	      ;; visaul commands
-	      (add-to-list 'eshell-visual-commands "bat")
-	      (add-to-list 'eshell-visual-commands "ssh")
-	      (add-to-list 'eshell-visual-commands "tail")))
+	  ;; aliases
+	  (eshell/alias "ff" "find-file $1")
+	  (eshell/alias "ee" "find-file-other-window $1")
+	  (eshell/alias "gd" "magit-diff-unstaged")
+	  (eshell/alias "gds" "magit-diff-staged")
+	  (eshell/alias "bat" "bat --theme=base16")
+	  (eshell/alias "ll" "exa -al --git --sort=type --time-style=long-iso")
+	  (eshell/alias "tree" "exa -a --tree --sort=type --ignore-glob='.git|.idea|.vscode'")
+	  ;; visaul commands
+	  (add-to-list 'eshell-visual-commands "bat")
+	  (add-to-list 'eshell-visual-commands "ssh")
+	  (add-to-list 'eshell-visual-commands "tail")))
   :config
   (setq eshell-prompt-function #'esh-prompt-fn))
 
@@ -329,12 +337,12 @@
   "return the eshell history as a list"
   (and (or (not (ring-p eshell-history-ring))
 	   (ring-empty-p eshell-history-ring))
-       (error "No history"))
+   (error "No history"))
   (let* ((index (1- (ring-length eshell-history-ring)))
 	 (ref (- (ring-length eshell-history-ring) index))
 	 (items (list)))
     (while (>= index 0)
-      (setq items (cons (format "%s" (eshell-get-history index)) items)
+  (setq items (cons (format "%s" (eshell-get-history index)) items)
 	    index (1- index)
 	    ref (1+ ref)))
     items))
@@ -344,7 +352,7 @@
   (interactive)
   "Insert eshell command from history"
   (let ((cmd (completing-read "Select eshell command: "
-			      (eshell-history-list))))
+			  (eshell-history-list))))
     (insert cmd)))
 
 (use-package esh-mode
@@ -371,7 +379,7 @@
   :init
   (defun psql:connection-alist (pgpass)
     (let ((value))
-      (dolist (element pgpass value)
+  (dolist (element pgpass value)
 	(setq srv-element (split-string element ":"))
 	(setq value (cons (list (intern (nth 0 srv-element))
 				`(sql-server ,(nth 0 srv-element))
@@ -386,8 +394,8 @@
 	(reverse (psql:connection-alist (read-lines "~/.pgpass"))))
   (add-hook 'sql-interactive-mode-hook
 	    (lambda ()
-	      (toggle-truncate-lines t)
-	      (sql-highlight-postgres-keywords))))
+	  (toggle-truncate-lines t)
+	  (sql-highlight-postgres-keywords))))
 
 (setq browse-url-browser-function 'xwidget-webkit-browse-url)
 

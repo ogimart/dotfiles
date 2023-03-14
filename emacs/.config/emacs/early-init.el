@@ -21,19 +21,19 @@
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . dark))
 (setq ns-use-proxy-icon nil
-      ns-antialias t
-      ns-use-thin-smoothing nil)
+  ns-antialias t
+  ns-use-thin-smoothing nil)
 (pixel-scroll-precision-mode)
 (setq x-underline-at-descent-line t)
 
 (setq visible-bell nil
-      ring-bell-function 'flash-mode-line)
+  ring-bell-function 'flash-mode-line)
 
 (defun flash-mode-line ()
   (invert-face 'mode-line)
   (run-with-timer 0.1 nil #'invert-face 'mode-line))
 
-(set-face-attribute 'default nil :family "Source Code Pro" :height 140 :weight 'normal)
+(set-face-attribute 'default nil :family "Source Code Pro" :height 150 :weight 'normal)
 (set-face-attribute 'variable-pitch nil :family "Source Sans 3" :height 1.1)
 (set-face-attribute 'fixed-pitch nil :family (face-attribute 'default :family))
 (set-face-attribute 'bold nil :weight 'medium)

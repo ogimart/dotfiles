@@ -35,7 +35,7 @@ and [[https://www.gnu.org/software/stow/manual/][gnu stow]] (see the details in 
 - Prolog (swi)
 - Python
 - Rust
-- Scheme (racket)
+- Scheme (chez, racket)
 
 *** CLI Utilities
 
