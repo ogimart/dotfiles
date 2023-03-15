@@ -470,6 +470,9 @@
 (global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
 (global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
 
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
+
 (use-package evil
   :defer 3
   :config

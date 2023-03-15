@@ -935,6 +935,8 @@ Make sure //Library/TeX/texbin/ is in the /PATH/.
     (which-key-mode))
 #+end_src
 
+**** Helper Functions
+
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x k") 'kill-this-buffer)
   (global-set-key (kbd "C-c w") 'delete-trailing-whitespace)
@@ -944,7 +946,12 @@ Make sure //Library/TeX/texbin/ is in the /PATH/.
   (global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
 #+end_src
 
-**** Helper Functions
+**** Tabs
+
+#+begin_src emacs-lisp
+  (setq-default tab-width 4)
+  (setq-default indent-tabs-mode nil)
+#+end_src
 
 ***  Vim Emulator
 
