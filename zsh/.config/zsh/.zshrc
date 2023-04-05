@@ -66,6 +66,7 @@ alias ec='emacsclient $@'
 alias clion='open -na "CLion.app" --args "$@"'
 alias intellij='open -na "IntelliJ IDEA.app" --args "$@"'
 alias goland='open -na "GoLand.app" --args "$@"'
+alias alisp='/Applications/AllegroCL64express.app/Contents/Resources/alisp'
 
 if [[ "$INSIDE_EMACS" = 'vterm' ]] \
     && [[ -f ~/.config/zsh/vterm-zsh.sh ]]; then
