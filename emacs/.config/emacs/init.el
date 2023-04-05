@@ -66,7 +66,7 @@
 				  :slant 'normal :bold nil)
 	  (set-face-attribute 'line-number nil
 				  :slant 'normal :bold nil)))
-  (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
+  (setq modus-themes-to-toggle '(modus-operandi modus-vivendi))
   (setq modus-themes-weights '(normal semibold)
 	modus-themes-disable-other-themes t)
   (setq modus-themes-common-palette-overrides

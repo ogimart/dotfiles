@@ -33,7 +33,7 @@
   (invert-face 'mode-line)
   (run-with-timer 0.1 nil #'invert-face 'mode-line))
 
-(set-face-attribute 'default nil :family "Source Code Pro" :height 150 :weight 'normal)
+(set-face-attribute 'default nil :family "MonoLisa" :height 130 :weight 'normal)
 (set-face-attribute 'variable-pitch nil :family "Source Sans 3" :height 1.1)
 (set-face-attribute 'fixed-pitch nil :family (face-attribute 'default :family))
 (set-face-attribute 'bold nil :weight 'medium)
