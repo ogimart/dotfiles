@@ -1,6 +1,6 @@
-# Dotfiles
+# Unix Development Environment
 
-My development environment for macOS and Linux.
+Terminal-first development environment for macOS and Linux.
 
 ## Installation
 
