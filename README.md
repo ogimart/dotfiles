@@ -38,7 +38,7 @@ and email.
 `ghostty` is commented out and assumed to be installed manually.
 
 On macOS, add Homebrew `bash` to `/etc/shells` and make it the default shell:
-```
+```sh
 echo "$(brew --prefix)/bin/bash" | sudo tee -a /etc/shells
 chsh -s "$(brew --prefix)/bin/bash"
 ```
