@@ -1,6 +1,7 @@
-# Unix Development Environment
+# Unix Development Environment — dotfiles
 
-Terminal-first development environment for macOS and Linux.
+Terminal-first development environment with install and config files
+for **macOS** and **Ubuntu**.
 
 ## Installation
 
@@ -10,7 +11,7 @@ cd ~ && git clone git@github.com:ogimart/dotfiles.git && cd dotfiles
 ./scripts/stow-config.sh # symlink configs into ~ and ~/.config with stow
 ```
 
-`install.sh` installs prerequisites (Xcode command line tools on macOS,
+`install.sh` installs prerequisites (`Command Line Tools for Xcode` on macOS,
 `build-essential` on Ubuntu), then Homebrew, then the packages in `Brewfile`,
 followed by Rust installation.
 
@@ -33,7 +34,8 @@ and email.
 | VMs | lima |
 | AI Agent | opencode |
 
-`bash`, `tmux`, `lima` and `opencode` are installed on macOS only; `ghostty` is commented out and assumed to be installed manually.
+`bash`, `tmux`, `lima` and `opencode` are installed on macOS only;
+`ghostty` is commented out and assumed to be installed manually.
 
 ## UI
 
