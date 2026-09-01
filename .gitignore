@@ -1,0 +1,11 @@
+# Brewfile
+Brewfile.dump
+
+# Personal data or secrets (if accidentally placed in repo)
+.env
+.secrets
+*.credential
+*.token
+
+# macOS system files
+.DS_Store

@@ -1,0 +1,21 @@
+title = " "
+macos-titlebar-proxy-icon = hidden
+
+quit-after-last-window-closed = true
+
+theme = "Catppuccin Mocha"
+
+shell-integration = bash
+shell-integration-features = no-cursor
+
+cursor-style-blink = false
+cursor-style = block
+
+font-family = "MonoLisa"
+font-style-bold = false
+font-style-italic = false
+font-style-bold-italic = false
+font-size = 14
+font-thicken = true
+font-thicken-strength = 150
+font-feature = -liga
