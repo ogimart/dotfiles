@@ -27,7 +27,7 @@ and email.
 | Languages | rust, c, c++, python |
 | Build | cmake, ninja, cargo |
 | Git | git-delta, lazygit |
-| Utilities | fzf, ripgrep, fd, tree, bat, stow |
+| Utilities | fzf, ripgrep, fd, tree, bat, stow, mosh |
 | LSP / Lint | rust-analyzer, clangd, ruff, lua-language-server |
 | Profiling | perf (linux), valgrind (linux) |
 | VMs | lima |

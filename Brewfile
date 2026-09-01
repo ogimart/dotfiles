@@ -5,6 +5,7 @@ brew "fzf"
 brew "fd"
 brew "bat"
 brew "tree"
+brew "mosh"
 
 ### Editors
 brew "neovim"
