@@ -26,7 +26,7 @@ and email.
 | Shell | bash |
 | Terminal | ghostty, tmux |
 | Languages | rust, c, c++, python |
-| Build | cmake, ninja, cargo |
+| Build | cargo, make, cmake, ninja |
 | Git | git-delta, lazygit |
 | Utilities | fzf, ripgrep, fd, bat, eza, stow, mosh |
 | LSP / Lint | rust-analyzer, clangd, ruff, lua-language-server |
@@ -34,7 +34,7 @@ and email.
 | VMs | lima |
 | AI Agent | opencode |
 
-`bash`, `tmux`, `lima` and `opencode` are installed on macOS only;
+`bash`, `gmake`, `tmux`, `lima` and `opencode` are installed on macOS only;
 `ghostty` is commented out and assumed to be installed manually.
 
 ## UI

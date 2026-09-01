@@ -26,6 +26,7 @@ brew "ruff"
 if OS.mac?
   brew "bash"
   brew "bash-completion@2"
+  brew "make"
   brew "tmux"
   brew "lima"
   brew "opencode"
