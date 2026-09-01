@@ -148,12 +148,12 @@ fi
 # common (macOS and linux)
 alias vi="nvim"
 alias lg="lazygit"
-alias tree="tree -C --dirsfirst"
+alias ls="eza --group-directories-first"
+alias ll="eza -alh --group --time-style=long-iso --group-directories-first"
+alias tree="eza --tree --group-directories-first -I .git"
 alias pathlist='echo "$PATH" | tr ":" "\n"'
 # os specific
 if [[ "$OS" == "Darwin" ]]; then
-  alias ls="ls -hD '%F %T' --color=auto"
-  alias ll="ls -alF"
   # aws
   alias awslocal='aws --profile localstack'
   # lima aliases
@@ -164,8 +164,6 @@ if [[ "$OS" == "Darwin" ]]; then
   alias lnpsql='lima nerdctl exec -it timescaledb psql -U postgres'
 elif [[ "$OS" == "Linux" ]]; then
   alias grep='grep --color=auto'
-  alias ls="ls --color=auto --time-style=long-iso"
-  alias ll="ls -alF"
   # nerdctl aliases
   alias docker='nerdctl'
 fi

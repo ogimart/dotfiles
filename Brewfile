@@ -4,7 +4,7 @@ brew "ripgrep"
 brew "fzf"
 brew "fd"
 brew "bat"
-brew "tree"
+brew "eza"
 brew "mosh"
 
 ### Editors
