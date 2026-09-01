@@ -150,7 +150,7 @@ alias vi="nvim"
 alias lg="lazygit"
 alias ls="eza --group-directories-first"
 alias la="eza -a --group-directories-first"
-alias ll="eza -alhmU --group --time-style=long-iso --group-directories-first --total-size"
+alias ll="eza -alhmU --group --time-style=long-iso --group-directories-first"
 alias tree="eza --tree --group-directories-first -I .git"
 alias pathlist='echo "$PATH" | tr ":" "\n"'
 # os specific
