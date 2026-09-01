@@ -164,7 +164,7 @@ if [[ "$OS" == "Darwin" ]]; then
   alias lnpsql='lima nerdctl exec -it timescaledb psql -U postgres'
 elif [[ "$OS" == "Linux" ]]; then
   alias grep='grep --color=auto'
-  alias ls="ls --color=auto"
+  alias ls="ls --color=auto --time-style=long-iso"
   alias ll="ls -alF"
   # nerdctl aliases
   alias docker='nerdctl'
