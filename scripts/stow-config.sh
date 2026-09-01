@@ -8,6 +8,7 @@ PACKAGES=(
   nvim
   tmux
   bat
+  eza
   lazygit
   themes
   ghostty

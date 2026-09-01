@@ -143,16 +143,19 @@ if command -v psql >/dev/null 2>&1; then
   }
 fi
 
+
 ################################################################################
 # ALIAS
 # common (macOS and linux)
-alias vi="nvim"
-alias lg="lazygit"
+export EZA_CONFIG_DIR="$HOME/.config/eza"
 alias ls="eza --group-directories-first"
 alias la="eza -a --group-directories-first"
 alias ll="eza -alhmU --group --time-style=long-iso --group-directories-first"
 alias tree="eza --tree --group-directories-first -I .git"
+alias vi="nvim"
+alias lg="lazygit"
 alias pathlist='echo "$PATH" | tr ":" "\n"'
+
 # os specific
 if [[ "$OS" == "Darwin" ]]; then
   # aws
