@@ -75,6 +75,7 @@ install_packages() {
   echo "Homebrew packages installed."
 }
 
+################################################################################
 # Rust
 install_rust () {
   if command -v rustup &>/dev/null; then
@@ -89,10 +90,42 @@ install_rust () {
 }
 
 ################################################################################
+# CMake & ninja
+install_cmake() {
+  if [[ "$OS" == "Linux" ]]; then
+    sudo apt install -y cmake ninja-build
+  elif [[ "$OS" == "Darwin" ]]; then
+    brew install cmake ninja
+  fi
+}
+
+################################################################################
+# LLVM clang & tools
+install_clang() {
+  local VERSION="${1:-22}"
+  if [[ "$OS" == "Linux" ]]; then
+    # sudo apt install -y clang clangd clang-tidy clang-format lld lldb
+    sudo apt install -y \
+      "clang-${VERSION}" \
+      "clangd-${VERSION}" \
+      "clang-tidy-${VERSION}" \
+      "clang-format-${VERSION}" \
+      "lld-${VERSION}" \
+      "lldb-${VERSION}"
+  elif [[ "$OS" == "Darwin" ]]; then
+    brew install "llvm@${VERSION}"
+  fi
+}
+
+################################################################################
 # Install
 install_dependencies
 install_homebrew
 install_packages
 install_rust
+
+# Uncomment to install cmake, ninja, and clang
+# install_cmake
+# install_clang 22
 
 echo "Install complete."
