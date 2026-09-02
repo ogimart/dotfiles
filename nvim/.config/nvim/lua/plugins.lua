@@ -293,26 +293,36 @@ end
 -- LSP Servers --
 
 local clangd_cmd
-local llvm_ver = "22"
 
 if is_macos then
-  -- LLVM clangd
-  local llvm_prefix = vim.fn.system("brew --prefix llvm@" .. llvm_ver):gsub("%s+$", "")
-  clangd_cmd = {
-    llvm_prefix .. "/bin/clangd",
-  }
-  -- SSH Lima VM
+  -- Apple clangd --
   -- clangd_cmd = {
-  --   "ssh", "lima-default", "/usr/bin/clangd-" .. llvm_ver,
-  --   -- "--query-driver=/usr/bin/gcc-" .. gcc_ver .. "," ..
-  --   -- "/usr/bin/g++-" .. gcc_ver,
+  --   "clangd"
   -- }
-elseif is_linux then
-  -- local gcc_ver = "15"
+
+  -- LLVM clangd --
+  -- local llvm_ver = 22
+  -- local llvm_prefix = vim.fn.system("brew --prefix llvm@" .. llvm_ver):gsub("%s+$", "")
+  -- clangd_cmd = {
+  --   llvm_prefix .. "/bin/clangd",
+  -- }
+
+  -- SSH Lima VM --
+  local clang_ver = 22
+  local gcc_ver = 15
   clangd_cmd = {
-    "clangd-" .. llvm_ver,
-    -- "--query-driver=/usr/bin/gcc-" .. gcc_ver .. "," ..
-    -- "/usr/bin/g++-" .. gcc_ver,
+    "ssh", "lima-default",
+    "/usr/bin/clangd-" .. clang_ver,
+    -- gnu gcc driver --
+    "--query-driver=/usr/bin/gcc-" .. gcc_ver .. "," .. "/usr/bin/g++-" .. gcc_ver,
+  }
+elseif is_linux then
+  local clang_ver = 22
+  local gcc_ver = 15
+  clangd_cmd = {
+    "/usr/bin/clangd-" .. clang_ver,
+    -- gnu gcc driver --
+    "--query-driver=/usr/bin/gcc-" .. gcc_ver .. "," .. "/usr/bin/g++-" .. gcc_ver,
   }
 end
 
