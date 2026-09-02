@@ -1,2 +1,38 @@
 date:
   foreground: White
+
+users:
+  user_you:
+    foreground: Default
+  user_root:
+    foreground: Default
+  user_other:
+    foreground: Default
+  group_yours:
+    foreground: Default
+  group_root:
+    foreground: Default
+  group_other:
+    foreground: Default
+
+size:
+  number_byte:
+    foreground: Cyan
+  number_kilo:
+    foreground: Cyan
+  number_mega:
+    foreground: Cyan
+  number_giga:
+    foreground: Cyan
+  number_huge:
+    foreground: Cyan
+  unit_byte:
+    foreground: Cyan
+  unit_kilo:
+    foreground: Cyan
+  unit_mega:
+    foreground: Cyan
+  unit_giga:
+    foreground: Cyan
+  unit_huge:
+    foreground: Cyan
