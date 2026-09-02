@@ -125,6 +125,8 @@ vim.keymap.set("n", "<leader>lo", "<cmd>lopen<cr>", { desc = "Open loclist" })
 vim.keymap.set("n", "<leader>lc", "<cmd>lclose<cr>", { desc = "Close loclist" })
 -- Terminal
 vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+-- Other
+vim.keymap.set("n", "<leader>nh", "<cmd>nohlsearch<cr>", { desc = "Stop highlighting search" })
 
 --------------------------------------------------------------------------------
 -- OmniComplete (replaced by nvim-cmp)
