@@ -341,17 +341,10 @@ local servers = {
     },
   },
   -- Python
-  pyright = {
+  ty = {
     settings = {
-      pyright = {
-        disableOrganizeImports = true,
-      },
-      python = {
-        analysis = {
-          typeCheckingMode = "basic", -- "strict"
-          diagnosticMode = "workspace",
-          autoSearchPaths = true,
-        },
+      ty = {
+        -- Add any ty-specific settings here
       },
     },
   },

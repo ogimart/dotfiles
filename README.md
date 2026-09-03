@@ -29,7 +29,7 @@ and email.
 | Build | cargo, make, cmake, ninja |
 | Git | git-delta, lazygit |
 | Utilities | fzf, ripgrep, fd, bat, eza, stow, mosh |
-| LSP / Lint | rust-analyzer, clangd, ruff, lua-language-server |
+| LSP / Lint | rust-analyzer, clangd, ty, ruff, lua-language-server |
 | Profiling | perf (linux), valgrind (linux) |
 | VMs | lima |
 | AI Agent | opencode |

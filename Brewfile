@@ -20,6 +20,7 @@ brew "lazygit"
 
 ### LSPs and Linters
 brew "lua-language-server"
+brew "ty"
 brew "ruff"
 
 ### macOS Only
