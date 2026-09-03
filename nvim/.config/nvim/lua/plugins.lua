@@ -296,29 +296,24 @@ local clangd_cmd
 
 if is_macos then
   -- Apple clangd --
-  -- clangd_cmd = {
-  --   "clangd"
-  -- }
+  -- clangd_cmd = { "clangd" }
 
   -- LLVM clangd --
   -- local llvm_ver = 22
   -- local llvm_prefix = vim.fn.system("brew --prefix llvm@" .. llvm_ver):gsub("%s+$", "")
-  -- clangd_cmd = {
-  --   llvm_prefix .. "/bin/clangd",
-  -- }
+  -- clangd_cmd = { llvm_prefix .. "/bin/clangd", }
 
-  -- SSH Lima VM --
+  -- Lima VM --
+  -- local gcc_ver = 15
   local clang_ver = 22
-  local gcc_ver = 15
   clangd_cmd = {
-    "ssh", "lima-default",
-    "/usr/bin/clangd-" .. clang_ver,
+    "lima", "/usr/bin/clangd-" .. clang_ver,
     -- gnu gcc driver --
-    "--query-driver=/usr/bin/gcc-" .. gcc_ver .. "," .. "/usr/bin/g++-" .. gcc_ver,
+    -- "--query-driver=/usr/bin/gcc-" .. gcc_ver .. "," .. "/usr/bin/g++-" .. gcc_ver,
   }
 elseif is_linux then
-  local clang_ver = 22
   local gcc_ver = 15
+  local clang_ver = 22
   clangd_cmd = {
     "/usr/bin/clangd-" .. clang_ver,
     -- gnu gcc driver --
@@ -333,6 +328,8 @@ local servers = {
   },
   -- Rust
   rust_analyzer = {
+    cmd = { "rust-analyzer" },
+    -- cmd = { "lima", "rust-analyzer" },
     settings = {
       ["rust-analyzer"] = {
         checkOnSave = true,
