@@ -25,7 +25,7 @@ and email.
 | Editor | neovim |
 | Shell | bash |
 | Terminal | ghostty, tmux |
-| Languages | rust, c, c++, python |
+| Languages | rust, c, c++, python, scheme |
 | Build | cargo, make, cmake, ninja |
 | Git | git-delta, lazygit |
 | Utilities | fzf, ripgrep, fd, bat, eza, stow, mosh |

@@ -23,6 +23,9 @@ brew "lua-language-server"
 brew "ty"
 brew "ruff"
 
+# Scheme
+brew "mit-scheme"
+
 ### macOS Only
 if OS.mac?
   brew "bash"
