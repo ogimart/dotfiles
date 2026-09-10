@@ -156,6 +156,7 @@ alias tree="eza --tree --group-directories-first -I .git"
 alias vi="nvim"
 alias lg="lazygit"
 alias pathlist='echo "$PATH" | tr ":" "\n"'
+alias scheme="chibi-scheme"
 
 # os specific
 if [[ "$OS" == "Darwin" ]]; then

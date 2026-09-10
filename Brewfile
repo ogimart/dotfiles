@@ -24,7 +24,7 @@ brew "ty"
 brew "ruff"
 
 # Scheme
-brew "mit-scheme"
+brew "chibi-scheme"
 
 ### macOS Only
 if OS.mac?
