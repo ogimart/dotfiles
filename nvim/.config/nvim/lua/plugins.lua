@@ -129,9 +129,10 @@ vim.pack.add({
 
 
   ------------------------------------------------------------------------------
-  -- Clojure / Scheme
+  -- Lisp / Scheme / Clojure
   ------------------------------------------------------------------------------
   gh("Olical/conjure"),
+  gh("jpalardy/vim-slime"),
 
   ------------------------------------------------------------------------------
   -- OpenCode
@@ -404,6 +405,26 @@ end
 vim.lsp.enable(vim.tbl_keys(servers))
 
 --------------------------------------------------------------------------------
+-- Slime REPL
+--------------------------------------------------------------------------------
+vim.g.slime_target = "tmux"
+vim.g.slime_default_config = {
+  socket_name = "default",
+  target_pane = "{right-of}",
+}
+vim.g.slime_dont_ask_default = 1
+
+--------------------------------------------------------------------------------
+-- Conjure
+--------------------------------------------------------------------------------
+vim.g["conjure#filetypes"] = { "scheme", "clojure" }
+vim.g["conjure#filetype_suffixes#scheme"] = { "scm", "sld", "ss", "sls" }
+-- Chibi Scheme
+vim.g["conjure#client#scheme#stdio#command"] = "chibi-scheme -R"
+vim.g["conjure#client#scheme#stdio#prompt_pattern"] = "> $?"
+vim.g["conjure#client#scheme#stdio#value_prefix_pattern"] = false
+
+--------------------------------------------------------------------------------
 -- OpenCode
 --------------------------------------------------------------------------------
 -- TODO
@@ -416,7 +437,7 @@ vim.api.nvim_set_hl(0, "Todo", { fg = "#e490a7", bg = "NONE", bold = true })
 vim.api.nvim_set_hl(0, "MatchParen", { fg = "#ffffff", bg = "NONE", underline = true })
 
 --------------------------------------------------------------------------------
--- Convenience commands (lazy.nvim's `:Lazy` replacement)
+-- Convenience vim.pack commands
 --------------------------------------------------------------------------------
 vim.api.nvim_create_user_command("PackUpdate", function()
   vim.pack.update()

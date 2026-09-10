@@ -81,6 +81,10 @@
       "rev": "65846025c15494983dafe5e3b46c8f88ab2e9635",
       "src": "https://github.com/tpope/vim-repeat"
     },
+    "vim-slime": {
+      "rev": "305b4d81ff4630af5137fdeffb54aa0fef14761b",
+      "src": "https://github.com/jpalardy/vim-slime"
+    },
     "vim-surround": {
       "rev": "3d188ed2113431cf8dac77be61b842acb64433d9",
       "src": "https://github.com/tpope/vim-surround"
