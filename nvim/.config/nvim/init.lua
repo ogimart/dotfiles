@@ -113,6 +113,10 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   pattern = "*.ixx",
   command = "set filetype=cpp"
 })
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = "*.sls",
+  command = "set filetype=scheme"
+})
 
 --------------------------------------------------------------------------------
 -- Keymap
