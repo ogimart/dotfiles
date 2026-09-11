@@ -125,17 +125,6 @@ if command -v fzf >/dev/null 2>&1; then
 fi
 
 ################################################################################
-# HOMEBREW
-brew() {
-  if [[ "$1" == "tap" ]]; then
-    echo "Adding new taps is not allowed!"
-    return 1
-  else
-    command brew "$@"
-  fi
-}
-
-################################################################################
 # POSTGRESQL
 if command -v psql >/dev/null 2>&1; then
   psql() {
