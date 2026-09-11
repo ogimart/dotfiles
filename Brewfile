@@ -25,6 +25,7 @@ brew "ruff"
 
 # Scheme
 brew "chibi-scheme"
+brew "rlwrap"
 
 ### macOS Only
 if OS.mac?

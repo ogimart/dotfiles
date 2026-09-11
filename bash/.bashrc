@@ -104,7 +104,7 @@ __build_prompt() {
   PS1+="${magenta}${venv}${reset}"
   PS1+="${yellow}${git}${reset}]"
 
-  if [[ ${#extra} -gt 8 ]]; then
+  if (( ${#extra} > 16 )); then
     PS1+="\n> "
   else
     PS1+="> "
@@ -145,7 +145,7 @@ alias tree="eza --tree --group-directories-first -I .git"
 alias vi="nvim"
 alias lg="lazygit"
 alias pathlist='echo "$PATH" | tr ":" "\n"'
-alias scheme="chibi-scheme"
+alias scheme="rlwrap chibi-scheme"
 
 # os specific
 if [[ "$OS" == "Darwin" ]]; then
