@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ALLOWED_TAPS=("homebrew/core" "homebrew/cask")
+ALLOWED_TAPS=("homebrew/cask")
 CURRENT_TAPS=$(brew tap)
 
 for TAP in $CURRENT_TAPS; do
