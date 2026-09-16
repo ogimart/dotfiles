@@ -127,9 +127,13 @@ vim.pack.add({
   ------------------------------------------------------------------------------
   gh("neovim/nvim-lspconfig"),
 
+  ------------------------------------------------------------------------------
+  -- Tree-Sitter
+  ------------------------------------------------------------------------------
+  gh("nvim-treesitter/nvim-treesitter"),
 
   ------------------------------------------------------------------------------
-  -- Lisp / Scheme / Clojure
+  -- Scheme / Clojure / Python REPL
   ------------------------------------------------------------------------------
   gh("Olical/conjure"),
   gh("jpalardy/vim-slime"),
@@ -415,12 +419,18 @@ vim.g.slime_default_config = {
 vim.g.slime_dont_ask_default = 1
 
 --------------------------------------------------------------------------------
+-- Tree-Sitter
+--------------------------------------------------------------------------------
+local ts = require("nvim-treesitter")
+ts.install { "python" }
+
+--------------------------------------------------------------------------------
 -- Conjure
 --------------------------------------------------------------------------------
-vim.g["conjure#filetypes"] = { "scheme", "clojure" }
+vim.g["conjure#filetypes"] = { "scheme", "python" }
 vim.g["conjure#filetype_suffixes#scheme"] = { "scm", "sld", "ss", "sls" }
--- Chibi Scheme
-vim.g["conjure#client#scheme#stdio#command"] = "chibi-scheme -R"
+-- Chez Scheme
+vim.g["conjure#client#scheme#stdio#command"] = "chez --eedisable --libdirs ."
 vim.g["conjure#client#scheme#stdio#prompt_pattern"] = "> $?"
 vim.g["conjure#client#scheme#stdio#value_prefix_pattern"] = false
 

@@ -7,6 +7,10 @@ brew "bat"
 brew "eza"
 brew "mosh"
 
+### Tree-Sitter
+brew "tree-sitter"
+brew "tree-sitter-cli"
+
 ### Editors
 brew "neovim"
 
@@ -24,8 +28,7 @@ brew "ty"
 brew "ruff"
 
 # Scheme
-brew "chibi-scheme"
-brew "rlwrap"
+brew "chezscheme"
 
 ### macOS Only
 if OS.mac?
