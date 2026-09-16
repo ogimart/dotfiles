@@ -85,13 +85,13 @@ white="\[\033[37m\]"
 reset="\[\033[0m\]"
 
 __venv_info() {
-  [ -n "$VIRTUAL_ENV" ] && printf " py:%s" "$(basename "$VIRTUAL_ENV")"
+  [ -n "$VIRTUAL_ENV" ] && printf "(%s) " "$(basename "$VIRTUAL_ENV")"
 }
 
 __branch_info() {
   local branch
   branch=$(__git_ps1 "%s")
-  [ -n "$branch" ] && printf " git:%s" "$branch"
+  [ -n "$branch" ] && printf " (%s)" "$branch"
 }
 
 __build_prompt() {
@@ -100,14 +100,14 @@ __build_prompt() {
   git="$(__branch_info)"
   extra="${venv}${git}"
 
-  PS1="[${reset}${cyan}\u@\h${reset}${white}:${reset}${blue}\W${reset}"
-  PS1+="${magenta}${venv}${reset}"
-  PS1+="${yellow}${git}${reset}]"
+  PS1="${magenta}${venv}${reset}"
+  PS1+="${reset}${cyan}\u@\h${reset}${white}:${reset}${blue}\W${reset}"
+  PS1+="${yellow}${git}${reset}"
 
   if (( ${#extra} > 16 )); then
-    PS1+="\n> "
+    PS1+="\n$ "
   else
-    PS1+="> "
+    PS1+=" $ "
   fi
 }
 
@@ -132,7 +132,6 @@ if command -v psql >/dev/null 2>&1; then
   }
 fi
 
-
 ################################################################################
 # ALIAS
 # common (macOS and linux)
@@ -145,7 +144,7 @@ alias tree="eza --tree --group-directories-first -I .git"
 alias vi="nvim"
 alias lg="lazygit"
 alias pathlist='echo "$PATH" | tr ":" "\n"'
-alias scheme="rlwrap chibi-scheme"
+alias scheme="chez --libdirs ."
 
 # os specific
 if [[ "$OS" == "Darwin" ]]; then
@@ -177,3 +176,6 @@ fi
 # shopt -s autocd cdspell direxpand dirspell globstar histappend histverify \
 #     nocaseglob no_empty_cmd_completion
 ################################################################################
+
+# opencode
+export PATH=/Users/ogi/.opencode/bin:$PATH
