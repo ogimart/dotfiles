@@ -32,6 +32,7 @@ brew "chezscheme"
 
 ### macOS Only
 if OS.mac?
+  brew "fish"
   brew "bash"
   brew "bash-completion@2"
   brew "make"

@@ -5,7 +5,7 @@ quit-after-last-window-closed = true
 
 theme = "Catppuccin Mocha"
 
-shell-integration = bash
+shell-integration = fish
 shell-integration-features = no-cursor
 
 cursor-style-blink = false

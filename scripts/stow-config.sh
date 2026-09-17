@@ -4,6 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.." || exit 1
 
 PACKAGES=(
+  fish
   bash
   nvim
   tmux
@@ -15,6 +16,10 @@ PACKAGES=(
 )
 
 mkdir -p "$HOME/.config"
+
+# fish
+rm -f "$HOME/.config/fish/config.fish"
+rm -f "$HOME/.config/fish/functions/fish_prompt.fish"
 
 stow \
   --target="$HOME" \
