@@ -23,24 +23,24 @@ and email.
 | | |
 |---|---|
 | Editor | neovim |
-| Shells | fish, bash |
+| Shells | zsh, bash |
 | Terminal | ghostty, tmux |
-| Languages | rust, c, c++, python, scheme |
+| Languages | rust, c, c++, python, lisp, scheme |
 | Build | cargo, make, cmake, ninja |
 | Git | git-delta, lazygit |
-| Utilities | fzf, ripgrep, fd, bat, eza, stow, mosh |
+| Utilities | fzf, ripgrep, fd, bat, eza, stow, mosh, rlwrap |
 | LSP / Lint | rust-analyzer, clangd, ty, ruff, lua-language-server |
 | Profiling | perf (linux), valgrind (linux) |
 | VMs | lima |
-| AI Agent | opencode |
+| AI Agents | opencode, llama.cpp |
 
-`fish`, `bash`, `gmake`, `tmux`, `lima` and `opencode` are installed on macOS only;
+`bash`, `gmake`, `tmux`, `lima` and `opencode` are installed on macOS only;
 `ghostty` is commented out and assumed to be installed manually.
 
-On macOS, add Homebrew `fish` to `/etc/shells` and make it the default shell:
+On macOS, add Homebrew `bash` to `/etc/shells` and make it the default shell:
 ```sh
-echo "$(brew --prefix)/bin/fish" | sudo tee -a /etc/shells
-chsh -s "$(brew --prefix)/bin/fish"
+echo "$(brew --prefix)/bin/bash" | sudo tee -a /etc/shells
+chsh -s "$(brew --prefix)/bin/bash"
 ```
 Log out and back in to apply.
 

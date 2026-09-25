@@ -1,15 +1,16 @@
-title = " "
-macos-titlebar-proxy-icon = hidden
+# ~/.config/ghostty/config
 
 quit-after-last-window-closed = true
 
 theme = "Catppuccin Mocha"
 
-shell-integration = fish
+shell-integration = zsh
 shell-integration-features = no-cursor
 
 cursor-style-blink = false
 cursor-style = block
+
+unfocused-split-opacity = 1.0
 
 font-family = "MonoLisa"
 font-style-bold = false
@@ -19,3 +20,14 @@ font-size = 14
 font-thicken = true
 font-thicken-strength = 150
 font-feature = -liga
+
+keybind = cmd+r=prompt_tab_title
+keybind = cmd+shift+comma=move_tab:-1
+keybind = cmd+shift+period=move_tab:1
+keybind = ctrl+[=text:\x1b
+
+macos-titlebar-proxy-icon = hidden
+macos-option-as-alt = true
+
+# config -- eof
+

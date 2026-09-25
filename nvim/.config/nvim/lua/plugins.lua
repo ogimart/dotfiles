@@ -121,6 +121,7 @@ vim.pack.add({
   gh("hrsh7th/cmp-nvim-lsp"),
   gh("hrsh7th/cmp-nvim-lsp-signature-help"),
   gh("hrsh7th/nvim-cmp"),
+  gh("PaterJason/cmp-conjure"),
 
   ------------------------------------------------------------------------------
   -- LSP
@@ -139,8 +140,9 @@ vim.pack.add({
   gh("jpalardy/vim-slime"),
 
   ------------------------------------------------------------------------------
-  -- OpenCode
+  -- LLM
   ------------------------------------------------------------------------------
+  gh("milanglacier/minuet-ai.nvim"),
   {
     src = gh("nickjvandyke/opencode.nvim"),
     version = vim.version.range("*"), -- Latest stable release
@@ -233,6 +235,7 @@ vim.keymap.set("v", "<leader>ds", ":DB<CR>", { desc = "Execute selected SQL" })
 --------------------------------------------------------------------------------
 -- Completion
 --------------------------------------------------------------------------------
+local minuet = require("minuet")
 local cmp = require("cmp")
 cmp.setup({
   snippet = {
@@ -243,21 +246,25 @@ cmp.setup({
   window = {
     completion = cmp.config.window.bordered({ border = "rounded" }),
     documentation = cmp.config.window.bordered({ border = "rounded" }),
+    -- room for multi-line LLM suggestions
+    max_width = 100,
+    max_height = 30,
   },
-  -- window = {
-  --   completion = cmp.config.window.bordered(),
-  --   documentation = cmp.config.window.bordered(),
-  -- },
   mapping = cmp.mapping.preset.insert({
     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.abort(),
     ["<CR>"] = cmp.mapping.confirm({ select = true }),
+    ["<C-l>"] = minuet.make_cmp_map(), -- ask minuet directly
   }),
   sources = cmp.config.sources({
     { name = "nvim_lsp" },
     { name = "nvim_lsp_signature_help" },
+    {
+      name = "minuet",
+      priority = 50
+    },
   }, {
     { name = "buffer" },
     { name = "path" },
@@ -266,15 +273,27 @@ cmp.setup({
     fields = { "menu", "abbr", "kind" },
     format = function(entry, item)
       local menu_icon = {
-        nvim_lsp = "[λ]",
+        minuet = "[α]",
+        nvim_lsp = "[σ]", -- maybe use σ instead; α for llm
         buffer = "[β]",
         path = "[π]",
-        ["vim-dadbod-completion"] = "[db]",
+        conjure = "[λ]",
+        ["vim-dadbod-completion"] = "[δ]",
       }
       item.menu = menu_icon[entry.source.name]
       return item
     end,
   },
+  performance = {
+    fetching_timeout = 2000, -- default 500 ms is too short for LLM responses
+  },
+})
+cmp.setup.filetype({ "lisp", "scheme", }, {
+  sources = cmp.config.sources({
+    { name = "conjure" },
+    { name = "buffer" },
+    { name = "path" },
+  }),
 })
 cmp.setup.filetype({ "sql", "plsql" }, {
   sources = {
@@ -427,12 +446,71 @@ ts.install { "python" }
 --------------------------------------------------------------------------------
 -- Conjure
 --------------------------------------------------------------------------------
-vim.g["conjure#filetypes"] = { "scheme", "python" }
+vim.g["conjure#filetypes"] = { "lisp", "scheme", "python" }
 vim.g["conjure#filetype_suffixes#scheme"] = { "scm", "sld", "ss", "sls" }
 -- Chez Scheme
-vim.g["conjure#client#scheme#stdio#command"] = "chez --eedisable --libdirs ."
+-- vim.g["conjure#client#scheme#stdio#command"] = "chez --eedisable --libdirs ."
+-- vim.g["conjure#client#scheme#stdio#prompt_pattern"] = "> $?"
+-- vim.g["conjure#client#scheme#stdio#value_prefix_pattern"] = false
+-- Chibi Scheme
+vim.g["conjure#client#scheme#stdio#command"] = "chibi-scheme"
 vim.g["conjure#client#scheme#stdio#prompt_pattern"] = "> $?"
 vim.g["conjure#client#scheme#stdio#value_prefix_pattern"] = false
+
+--------------------------------------------------------------------------------
+-- Minuet
+--------------------------------------------------------------------------------
+require('minuet').setup({
+  provider = 'openai_fim_compatible',
+  n_completions = 1,     -- one suggestion is plenty for a local model
+  context_window = 4000, -- characters around the cursor; raise until it feels laggy
+  request_timeout = 3,   -- seconds
+  debounce = 300,        -- ms after you stop typing before a request fires
+  throttle = 1000,       -- ms minimum between requests
+
+  provider_options = {
+    openai_fim_compatible = {
+      api_key = 'TERM', -- name of any env var that exists; llama.cpp ignores it
+      name = 'Llama.cpp',
+      end_point = 'http://localhost:8012/v1/completions',
+      model = 'PLACEHOLDER', -- the model is fixed when llama-server starts
+      optional = {
+        max_tokens = 56,
+        top_p = 0.9,
+      },
+      template = {
+        prompt = function(context_before_cursor, context_after_cursor, _)
+          return '<|fim_prefix|>'
+              .. context_before_cursor
+              .. '<|fim_suffix|>'
+              .. context_after_cursor
+              .. '<|fim_middle|>'
+        end,
+        suffix = false,
+      },
+    },
+  },
+
+  -- Inline ghost text: auto-triggers while typing in these filetypes
+  virtualtext = {
+    auto_trigger_ft = {},
+    -- auto_trigger_ft = { 'lua', 'python', 'rust', 'typescript', 'c', 'cpp', 'sh' },
+    keymap = {
+      accept = '<A-A>',         -- accept whole suggestion
+      accept_line = '<A-a>',    -- accept one line
+      accept_n_lines = '<A-z>', -- accept N lines (prompts for N)
+      prev = '<A-[>',           -- cycle / manually trigger
+      next = '<A-]>',
+      dismiss = '<A-e>',
+    },
+    show_on_completion_menu = true, -- keep ghost text visible while the cmp menu is open
+  },
+
+  -- cmp source: manual only, so it doesn't double up with the ghost text
+  cmp = {
+    enable_auto_complete = true,
+  },
+})
 
 --------------------------------------------------------------------------------
 -- OpenCode

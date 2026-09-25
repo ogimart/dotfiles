@@ -11,4 +11,3 @@ for TAP in $CURRENT_TAPS; do
 done
 
 echo "Only authorized taps remain."
-

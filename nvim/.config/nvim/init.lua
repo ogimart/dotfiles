@@ -119,6 +119,20 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 })
 
 --------------------------------------------------------------------------------
+-- Common Lisp (swank)
+--------------------------------------------------------------------------------
+vim.api.nvim_create_user_command("SwankStart", function()
+  -- Start swank in a vertical split tmux pane (right 50%)
+  -- vim.fn.system("tmux split-window -h 'fish -c sbcl-swank'")
+
+  -- Start swank in a horizontal tmux pane (bottom 25%)
+  -- vim.fn.system("tmux split-window -v -p 25 'fish -c sbcl-swank'")
+
+  -- Start swank in a new tmux window named 'swank'
+  vim.fn.system("tmux new-window -d -n swank 'fish -c sbcl-swank'")
+end, {})
+
+--------------------------------------------------------------------------------
 -- Keymap
 --------------------------------------------------------------------------------
 -- Quickfix list
@@ -131,6 +145,7 @@ vim.keymap.set("n", "<leader>lc", "<cmd>lclose<cr>", { desc = "Close loclist" })
 vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 -- Other
 vim.keymap.set("n", "<leader>nh", "<cmd>nohlsearch<cr>", { desc = "Stop highlighting search" })
+vim.keymap.set("n", "<localleader>rs", ":SwankStart<CR>", { silent = true, desc = "Start Swank in tmux pane" })
 
 --------------------------------------------------------------------------------
 -- OmniComplete (replaced by nvim-cmp)

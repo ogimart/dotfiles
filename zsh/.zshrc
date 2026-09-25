@@ -7,6 +7,7 @@ OS="$(uname -s)"
 ################################################################################
 # NON-INTERACTIVE CHECK
 [[ -o interactive ]] || return
+# [[ $TERM == dumb ]] && { unsetopt zle; PS1='%# '; unset RPROMPT; return }
 
 ################################################################################
 # TERMINAL
@@ -19,7 +20,7 @@ bindkey -e
 
 ################################################################################
 # HISTORY
-HISTFILE=~/.config/zsh/.zsh_history
+HISTFILE=~/.zsh_history
 HISTSIZE=50000
 SAVEHIST=50000
 setopt appendhistory
@@ -30,9 +31,7 @@ setopt hist_ignore_space
 
 ################################################################################
 # COMPLETION & ZSH ENHANCEMENTS
-if [[ "$OS" == "Darwin" ]] && type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-fi
+fpath=("$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
 
 autoload -Uz compinit
 compinit
@@ -79,14 +78,6 @@ precmd() {
 # FZF
 if command -v fzf >/dev/null 2>&1; then
   eval "$(fzf --zsh)"
-fi
-
-################################################################################
-# POSTGRESQL
-if command -v psql >/dev/null 2>&1; then
-  psql() {
-    command psql -h localhost -p 5432 -U postgres -d postgres "$@"
-  }
 fi
 
 ################################################################################

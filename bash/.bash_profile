@@ -12,8 +12,6 @@ export XDG_CONFIG_HOME="$HOME/.config"
 # HOMEBREW
 if [ -x /opt/homebrew/bin/brew ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [ -x "$HOME/.linuxbrew/bin/brew" ]; then
-  eval "$("$HOME/.linuxbrew/bin/brew" shellenv)"
 elif [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
@@ -36,11 +34,13 @@ export CMAKE_GENERATOR=Ninja
 
 ################################################################################
 # JAVA
-export JAVA_HOME=/opt/jvm/jdk-zulu-21
-export PATH="$JAVA_HOME/bin:$PATH"
+if [[ "$OS" == "Darwin" ]]; then
+  export JAVA_HOME=/opt/jvm/jdk-zulu-21
+  export PATH="$JAVA_HOME/bin:$PATH"
 
-export GRADLE_HOME=/opt/jvm/gradle-9.1.0
-export PATH="$GRADLE_HOME/bin:$PATH"
+  export GRADLE_HOME=/opt/jvm/gradle-9.1.0
+  export PATH="$GRADLE_HOME/bin:$PATH"
+fi
 
 ################################################################################
 # OPENCODE
@@ -48,7 +48,10 @@ export PATH="$GRADLE_HOME/bin:$PATH"
 
 ################################################################################
 # POSTGRESQL
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+export PGHOST=localhost PGPORT=5432 PGUSER=postgres PGDATABASE=postgres
+if [[ "$OS" == "Darwin" ]]; then
+  export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+fi
 
 ################################################################################
 # LATEX
@@ -58,7 +61,8 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 # FZF
 if command -v fzf >/dev/null 2>&1; then
   if command -v rg >/dev/null 2>&1; then
-    export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!{.git,node_modules,vendor,target,build,out}/*"'
+    export FZF_DEFAULT_COMMAND='rg --files --hidden --follow \
+      --glob "!{.git,node_modules,vendor,target,build,out}/*"'
   fi
 
   # Catppuccin Mocha

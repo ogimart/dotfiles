@@ -27,14 +27,14 @@ brew "lua-language-server"
 brew "ty"
 brew "ruff"
 
-# Scheme
+# Lisp / Scheme
+brew "roswell"
 brew "chezscheme"
+brew "rlwrap"
 
 ### macOS Only
 if OS.mac?
-  brew "fish"
-  brew "bash"
-  brew "bash-completion@2"
+  zsh-completions
   brew "make"
   brew "tmux"
   brew "lima"

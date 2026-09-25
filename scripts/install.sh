@@ -118,6 +118,21 @@ install_clang() {
 }
 
 ################################################################################
+# Lisp (sbcl)
+install_lisp() {
+  if ! command -v ros &>/dev/null; then
+    echo "Roswell is not installed. Skipping Lisp install."
+    return 1
+  fi
+
+  ros setup
+  ros install sbcl-bin
+  ros install slime
+
+  echo "Lisp installed successfully."
+}
+
+################################################################################
 # Install
 install_dependencies
 install_homebrew
@@ -127,5 +142,8 @@ install_rust
 # Uncomment to install cmake, ninja, and clang
 # install_cmake
 # install_clang 22
+
+# Uncomment to install Quicklisp
+# install_lisp
 
 echo "Install complete."

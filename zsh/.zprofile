@@ -6,6 +6,12 @@ OS="$(uname -s)"
 typeset -U PATH path
 
 ################################################################################
+# XDG
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+
+################################################################################
 # HOMEBREW
 if [ -x /opt/homebrew/bin/brew ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -41,6 +47,7 @@ fi
 
 ################################################################################
 # POSTGRESQL
+export PGHOST=localhost PGPORT=5432 PGUSER=postgres PGDATABASE=postgres
 if [[ "$OS" == "Darwin" ]]; then
   export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 fi
@@ -49,7 +56,8 @@ fi
 # FZF
 if command -v fzf >/dev/null 2>&1; then
   if command -v rg >/dev/null 2>&1; then
-    export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!{.git,node_modules,vendor,target,build,out}/*"'
+    export FZF_DEFAULT_COMMAND='rg --files --hidden --follow \
+      --glob "!{.git,node_modules,vendor,target,build,out}/*"'
   fi
 
   # Catppuccin Mocha
@@ -83,4 +91,4 @@ fi
 # SECRETS
 [ -r ~/.secrets ] && . "$HOME/.secrets"
 
-# .zprofile -- eof
+# .zprofile --- eof

@@ -58,7 +58,7 @@ case "$OS" in
 esac
 
 ################################################################################
-# PROMPT ツ❯
+# PROMPT
 case "$OS" in
   Darwin)
     if [[ -r "/Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh" ]]; then
@@ -95,7 +95,7 @@ __branch_info() {
 }
 
 __build_prompt() {
-  local venv git extra
+  local venv git extra width threshold
   venv="$(__venv_info)"
   git="$(__branch_info)"
   extra="${venv}${git}"
@@ -104,7 +104,10 @@ __build_prompt() {
   PS1+="${reset}${cyan}\u@\h${reset}${white}:${reset}${blue}\W${reset}"
   PS1+="${yellow}${git}${reset}"
 
-  if (( ${#extra} > 16 )); then
+  width=$(( ${#venv} + ${#USER} + ${#HOSTNAME} + ${#dir} + ${#git} + 2 ))
+  threshold=$(( COLUMNS * 75 / 100 ))
+
+  if (( width > threshold )); then
     PS1+="\n$ "
   else
     PS1+=" $ "
@@ -125,14 +128,6 @@ if command -v fzf >/dev/null 2>&1; then
 fi
 
 ################################################################################
-# POSTGRESQL
-if command -v psql >/dev/null 2>&1; then
-  psql() {
-    command psql -h localhost -p 5432 -U postgres -d postgres "$@"
-  }
-fi
-
-################################################################################
 # ALIAS
 # common (macOS and linux)
 export EZA_CONFIG_DIR="$HOME/.config/eza"
@@ -141,7 +136,8 @@ alias la="eza -a --group-directories-first"
 alias ll="eza -al --time-style=long-iso --group-directories-first"
 alias lla="eza -alhmU --group --time-style=long-iso --group-directories-first"
 alias tree="eza --tree --group-directories-first -I .git"
-alias vi="nvim"
+alias tm="tmux new -s main"
+alias em="emacs -nw"
 alias lg="lazygit"
 alias pathlist='echo "$PATH" | tr ":" "\n"'
 alias scheme="chez --libdirs ."
@@ -156,11 +152,20 @@ if [[ "$OS" == "Darwin" ]]; then
   alias lcmake="lima cmake"
   alias lctest="lima ctest"
   alias lnpsql='lima nerdctl exec -it timescaledb psql -U postgres'
+  alias ew="open -a Emacs"
 elif [[ "$OS" == "Linux" ]]; then
   alias grep='grep --color=auto'
   # nerdctl aliases
   alias docker='nerdctl'
 fi
+
+################################################################################
+# GNU EMACS
+# emacs quick launch
+ee() {
+    emacs -Q -l ~/.config/emacs/quick-init.el -nw "$@"
+}
+complete -o default ee
 
 ################################################################################
 # TODO SHELL OPTIONS
@@ -176,6 +181,3 @@ fi
 # shopt -s autocd cdspell direxpand dirspell globstar histappend histverify \
 #     nocaseglob no_empty_cmd_completion
 ################################################################################
-
-# opencode
-export PATH=/Users/ogi/.opencode/bin:$PATH

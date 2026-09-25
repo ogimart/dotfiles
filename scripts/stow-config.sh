@@ -3,9 +3,22 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.." || exit 1
 
+# Shell config in ~/
+if [[ "$OS" == "Darwin" ]]; then
+  stow --target="$HOME" --restow zsh
+fi
+
+if [[ "$OS" == "Linux" ]]; then
+  stow --target="$HOME" --restow bash
+fi
+
+# Vim config in ~/
+stow --target="$HOME" --restow vim
+
+# Common Packages Config in ~/.config
+mkdir -p "$HOME/.config"
+
 PACKAGES=(
-  fish
-  bash
   nvim
   tmux
   bat
@@ -15,13 +28,8 @@ PACKAGES=(
   ghostty
 )
 
-mkdir -p "$HOME/.config"
-
-# fish
-rm -f "$HOME/.config/fish/config.fish"
-rm -f "$HOME/.config/fish/functions/fish_prompt.fish"
-
 stow \
   --target="$HOME" \
   --restow \
   "${PACKAGES[@]}"
+

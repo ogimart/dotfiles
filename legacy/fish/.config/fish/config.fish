@@ -117,7 +117,6 @@ if status is-interactive
   alias vi="nvim"
   alias lg="lazygit"
   alias pathlist="string join \n \$PATH"
-  alias scheme="chez --libdirs ."
 
   # os specific
   if test "$fish_os" = Darwin
@@ -133,4 +132,8 @@ if status is-interactive
     alias grep='grep --color=auto'
     alias docker='nerdctl'
   end
+  # if test (uname) = "Darwin"
+  #   and not set -q TMUX
+  #   exec tmux new-session -A -s main
+  # end
 end
