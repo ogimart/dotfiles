@@ -1,5 +1,6 @@
 ### CLI Tools
 brew "stow"
+brew "zsh-completions"
 brew "ripgrep"
 brew "fzf"
 brew "fd"
@@ -34,9 +35,8 @@ brew "rlwrap"
 
 ### macOS Only
 if OS.mac?
-  zsh-completions
-  brew "make"
   brew "tmux"
+  brew "make"
   brew "lima"
   brew "opencode"
   # if ghostty not already installed, uncomment the following line
