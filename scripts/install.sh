@@ -76,6 +76,20 @@ install_packages() {
 }
 
 ################################################################################
+# Vim
+install_vim_plugins() {
+  VIM_PACK_DIR="$HOME/.vim/pack/plugins/start"
+  mkdir -p "$VIM_PACK_DIR"
+
+  git clone --depth 1 https://github.com/tpope/vim-commentary.git \
+    "$VIM_PACK_DIR/vim-commentary"
+  git clone --depth 1 https://github.com/junegunn/fzf.vim.git \
+    "$VIM_PACK_DIR/fzf.vim"
+  git clone --depth 1 https://github.com/catppuccin/vim.git \
+    "$VIM_PACK_DIR/catppuccin"
+}
+
+################################################################################
 # Rust
 install_rust () {
   if command -v rustup &>/dev/null; then
@@ -137,6 +151,7 @@ install_lisp() {
 install_dependencies
 install_homebrew
 install_packages
+install_vim_plugins
 install_rust
 
 # Uncomment to install cmake, ninja, and clang
