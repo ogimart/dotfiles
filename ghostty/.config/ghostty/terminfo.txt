@@ -1,0 +1,4 @@
+infocmp -x xterm-ghostty
+infocmp -x xterm-ghostty > /tmp/xterm-ghostty.terminfo
+head /tmp/xterm-ghostty.terminfo
+cat /tmp/xterm-ghostty.terminfo | lima sudo tic -x - 
