@@ -103,7 +103,7 @@ if test -r "$HOME/.secrets.fish"
 end
 
 ################################################################################
-# INTERACTIVE 
+# INTERACTIVE
 if status is-interactive
   # Commands to run in interactive sessions can go here
   set -g fish_pager_color_progress gray
@@ -132,8 +132,4 @@ if status is-interactive
     alias grep='grep --color=auto'
     alias docker='nerdctl'
   end
-  # if test (uname) = "Darwin"
-  #   and not set -q TMUX
-  #   exec tmux new-session -A -s main
-  # end
 end
