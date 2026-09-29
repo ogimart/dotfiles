@@ -19,12 +19,14 @@ Plug 'skywind3000/asyncrun.vim'
 Plug 'skywind3000/asynctasks.vim'
 # Terminal
 Plug 'voldikss/vim-floaterm'
-# # Fuzzy Finder
+# Fuzzy Finder
 Plug 'junegunn/fzf' | Plug 'junegunn/fzf.vim'
 # # LSP
 Plug 'yegappan/lsp'
-# AI Completion TODO
-# Plug 'Exafunction/windsurf.vim', { 'branch': 'main' }
+# LLM
+Plug 'ggml-org/llama.vim'
+# Slime REPL
+Plug 'jpalardy/vim-slime'
 # Colorscheme
 Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 # # Statusline
@@ -47,7 +49,7 @@ set path+=**
 set wildmenu
 set wildoptions=pum
 set completeopt=noinsert,menuone,popup
-set completepopup=border:off
+set completepopup=border:on
 
 ################################################################################
 # BACKUP
@@ -132,55 +134,57 @@ var lspOpts = {
 autocmd User LspSetup g:LspOptionsSet(lspOpts)
 
 var lspServers = [
-  # {
-  #   name: 'rust-analyzer',
-  #   filetype: ['rust'],
-  #   path: 'rust-analyzer',
-  #   args: [],
-  #   syncInit: v:true,
-  #   settings: {
-  #     'rust-analyzer': {
-  #       'checkOnSave': {
-  #         'command': 'clippy'
-  #       }
-  #     }
-  #   }
-  # },
   {
-    name: 'pyright',
-    filetype: ['python'],
-    path: 'pyright-langserver',
-    args: ['--stdio'],
-    initializationOptions: {
-      'pyright': {
-        'disableOrganizeImports': v:false
+    name: 'clangd',
+    filetype: ['c', 'cpp'],
+    path: 'clangd',
+    args: ['--background-index', '--clang-tidy']
+  },
+  {
+    name: 'rust-analyzer',
+    filetype: ['rust'],
+    path: 'rust-analyzer',
+    args: [],
+    syncInit: v:true,
+    settings: {
+      'rust-analyzer': {
+        'checkOnSave': {
+          'command': 'clippy'
+        }
       }
     }
   },
-  # {
-  #   name: 'ruff',
-  #   filetype: ['python'],
-  #   path: 'ruff',
-  #   args: ['server', '--preview'],
-  #   initializationOptions: {
-  #     'settings': {
-  #       'capabilities': {
-  #         'hoverProvider': v:false
-  #       }
-  #     }
-  #   }
-  # },
-  # {
-  #   name: 'deno',
-  #   filetype: ['typescript'],
-  #   path: 'deno',
-  #   args: ['lsp'],
-  #   debug: v:true,
-  #   initializationOptions: {
-  #     'enable': v:true,
-  #     'lint': v:true
-  #   }
-  # }
+  {
+    name: 'ty',
+    filetype: ['python'],
+    path: 'ty',
+    args: ['server'],
+    initializationOptions: {}
+  },
+  {
+    name: 'ruff',
+    filetype: ['python'],
+    path: 'ruff',
+    args: ['server', '--preview'],
+    initializationOptions: {
+      'settings': {
+        'capabilities': {
+          'hoverProvider': v:false
+        }
+      }
+    }
+  },
+  {
+    name: 'deno',
+    filetype: ['typescript'],
+    path: 'deno',
+    args: ['lsp'],
+    debug: v:true,
+    initializationOptions: {
+      'enable': v:true,
+      'lint': v:true
+    }
+  }
 ]
 autocmd User LspSetup g:LspAddServer(lspServers)
 
@@ -190,13 +194,16 @@ augroup LspAutoFormat
 augroup END
 
 ################################################################################
-# AI Completion TODO
-# g:codeium_disable_bindings = 0
-# g:codeium_filetypes = {
-#   "rust": v:true,
-#   "python": v:true,
-#   "typescript": v:true,
-# }
+# LLM TODO
+
+################################################################################
+# SLIME
+g:slime_target = 'tmux'
+g:slime_default_config = {
+    socket_name: 'default',
+  target_pane: '{right-of}',
+}
+g:slime_dont_ask_default = 1
 
 ################################################################################
 # DOTENV
