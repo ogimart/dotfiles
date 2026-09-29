@@ -23,7 +23,7 @@ and email.
 | | |
 |---|---|
 | Editor | neovim |
-| Shells | zsh, bash |
+| Shell | zsh |
 | Terminal | ghostty, tmux |
 | Languages | rust, c, c++, python, lisp, scheme |
 | Build | cargo, make, cmake, ninja |
@@ -34,13 +34,12 @@ and email.
 | VMs | lima |
 | AI Agents | opencode, llama.cpp |
 
-`bash`, `gmake`, `tmux`, `lima` and `opencode` are installed on macOS only;
+`gmake`, `tmux`, `lima` and `opencode` are installed on macOS only;
 `ghostty` is commented out and assumed to be installed manually.
 
-On macOS, add Homebrew `bash` to `/etc/shells` and make it the default shell:
+On Ubuntu, add `zsh` to `/etc/shells` and make it the default login shell:
 ```sh
-echo "$(brew --prefix)/bin/bash" | sudo tee -a /etc/shells
-chsh -s "$(brew --prefix)/bin/bash"
+sudo chsh -s $(which zsh) $USER
 ```
 Log out and back in to apply.
 
