@@ -23,11 +23,13 @@ bindkey -e
 HISTFILE=~/.zsh_history
 HISTSIZE=50000
 SAVEHIST=50000
-setopt appendhistory
-setopt sharehistory
-setopt hist_expire_dups_first
-setopt hist_ignore_dups
-setopt hist_ignore_space
+setopt extended_history       # Record timestamp and duration
+setopt share_history          # Share history live across panes
+setopt hist_expire_dups_first # Expire duplicate entries first when trimming
+setopt hist_ignore_all_dups   # Remove older duplicate entries from memory
+setopt hist_save_no_dups      # Prevent duplicate entries from being written to disk
+setopt hist_ignore_space      # Don't record entries starting with a space
+setopt hist_reduce_blanks     # Remove superfluous blanks
 
 ################################################################################
 # COMPLETION & ZSH ENHANCEMENTS
