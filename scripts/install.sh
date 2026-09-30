@@ -81,10 +81,22 @@ install_vim_plugins() {
   VIM_PACK_DIR="$HOME/.vim/pack/plugins/start"
   mkdir -p "$VIM_PACK_DIR"
 
+  # Vim Comments
   git clone --depth 1 https://github.com/tpope/vim-commentary.git \
     "$VIM_PACK_DIR/vim-commentary"
+  vim -u NONE -c "helptags $VIM_PACK_DIR/vim-commentary/doc" -c q
+
+  # Fuzzy Search
   git clone --depth 1 https://github.com/junegunn/fzf.vim.git \
     "$VIM_PACK_DIR/fzf.vim"
+  vim -u NONE -c "helptags $VIM_PACK_DIR/fzf.vim/doc" -c q
+
+  # LSP
+  git clone --depth 1 https://github.com/yegappan/lsp \
+    "$VIM_PACK_DIR/lsp"
+  vim -u NONE -c "helptags $VIM_PACK_DIR/lsp/doc" -c q
+
+  # Theme
   git clone --depth 1 https://github.com/catppuccin/vim.git \
     "$VIM_PACK_DIR/catppuccin"
 }

@@ -16,6 +16,9 @@ set wildmenu
 set wildoptions=pum
 set completeopt=noinsert,menuone,popup
 set completepopup=border:on
+if v:version >= 902
+  set pumborder=round
+endif
 
 ################################################################################
 # BACKUP
@@ -67,6 +70,70 @@ elseif isdirectory('/home/linuxbrew/.linuxbrew/opt/fzf')
 endif
 
 ################################################################################
+# LSP
+set keywordprg=:LspHover
+
+var lspOpts = {
+  popupBorder: true,
+  diagSignErrorText: '✘',
+  diagSignWarningText: '⚑',
+  diagSignHintText: '▲',
+  diagSignInfoText: '»',
+}
+
+autocmd User LspSetup g:LspOptionsSet(lspOpts)
+
+var lspServers = [
+  {
+    name: 'clangd',
+    filetype: ['c', 'cpp'],
+    path: 'clangd',
+    args: ['--background-index', '--clang-tidy']
+  },
+  {
+    name: 'rust-analyzer',
+    filetype: ['rust'],
+    path: 'rust-analyzer',
+    args: [],
+    syncInit: v:true,
+    settings: {
+      'rust-analyzer': {
+        'checkOnSave': {
+          'command': 'clippy'
+        }
+      }
+    }
+  },
+  {
+    name: 'ty',
+    filetype: ['python'],
+    path: 'ty',
+    args: ['server'],
+    initializationOptions: {}
+  },
+  {
+    name: 'ruff',
+    filetype: ['python'],
+    path: 'ruff',
+    args: ['server', '--preview'],
+    initializationOptions: {
+      'settings': {
+        'capabilities': {
+          'hoverProvider': v:false
+        }
+      }
+    }
+  }
+]
+
+autocmd User LspSetup call LspAddServer(lspServers)
+
+augroup LspAutoFormat
+  autocmd!
+  autocmd BufWritePre *.c,*.cpp,*.h,*.hpp,*.rs,*.py, :LspFormat
+augroup END
+
+################################################################################
 # KEYMAP
 g:mapleader = "\<space>"
 # Quickfix
@@ -85,6 +152,22 @@ nnoremap <leader>fl <cmd>BLines<cr>
 nnoremap <leader>ff <cmd>Files<cr>
 nnoremap <leader>fg <cmd>Rg<cr>
 nnoremap <leader>fs :RG<space>
+# LSP
+nnoremap gK <cmd>LspHover<cr>
+nnoremap gd <cmd>LspGotoDefinition<cr>
+nnoremap gD <cmd>LspGotoTypeDef<cr>
+nnoremap gr <cmd>LspShowReferences<cr>
+nnoremap <leader>rn <cmd>LspRename<cr>
+nnoremap <leader>ca <cmd>LspCodeAction<cr>
+nnoremap <leader>cf <cmd>LspFormat<cr>
+nnoremap <leader>cd <cmd>LspDiag show<cr>
+nnoremap ]d <cmd>LspDiag next<cr>
+nnoremap [d <cmd>LspDiag prev<cr>
+nnoremap gp <cmd>LspPeekDefinition<cr>
+nnoremap <leader>ss <cmd>LspSymbolSearch<cr>
+nnoremap <leader>so <cmd>LspDocumentSymbol<cr>
+nnoremap <leader>ic <cmd>LspIncomingCalls<cr>
+nnoremap <leader>oc <cmd>LspOutgoingCalls<cr>
 
 ################################################################################
 # COLOR SCHEME
