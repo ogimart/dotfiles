@@ -329,18 +329,18 @@ if is_macos then
   -- clangd_cmd = { "clangd" }
 
   -- LLVM clangd --
-  -- local llvm_ver = 22
-  -- local llvm_prefix = vim.fn.system("brew --prefix llvm@" .. llvm_ver):gsub("%s+$", "")
-  -- clangd_cmd = { llvm_prefix .. "/bin/clangd", }
+  local llvm_ver = 22
+  local llvm_prefix = vim.fn.system("brew --prefix llvm@" .. llvm_ver):gsub("%s+$", "")
+  clangd_cmd = { llvm_prefix .. "/bin/clangd", }
 
   -- Lima VM --
   -- local gcc_ver = 15
-  local clang_ver = 22
-  clangd_cmd = {
-    "lima", "/usr/bin/clangd-" .. clang_ver,
-    -- gnu gcc driver --
-    -- "--query-driver=/usr/bin/gcc-" .. gcc_ver .. "," .. "/usr/bin/g++-" .. gcc_ver,
-  }
+  -- local clang_ver = 22
+  -- clangd_cmd = {
+  --   "lima", "/usr/bin/clangd-" .. clang_ver,
+  --   -- gnu gcc driver --
+  --   -- "--query-driver=/usr/bin/gcc-" .. gcc_ver .. "," .. "/usr/bin/g++-" .. gcc_ver,
+  -- }
 elseif is_linux then
   local gcc_ver = 15
   local clang_ver = 22
