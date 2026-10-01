@@ -22,7 +22,7 @@ and email.
 
 | | |
 |---|---|
-| Editor | neovim |
+| Editor | vim |
 | Shell | zsh |
 | Terminal | ghostty, tmux |
 | Languages | rust, c, c++, python, lisp, scheme |

@@ -8,7 +8,6 @@ mkdir -p "$HOME/.config"
 CONFIG_LIST=(
   zsh
   vim
-  nvim
   tmux
   bat
   eza

@@ -13,7 +13,7 @@ brew "tree-sitter"
 brew "tree-sitter-cli"
 
 ### Editors
-brew "neovim"
+brew "vim"
 
 ### Build Tools
 brew "ninja"

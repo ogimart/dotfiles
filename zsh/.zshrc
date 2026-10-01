@@ -94,7 +94,6 @@ alias tree="eza --tree --group-directories-first -I .git"
 alias tm="tmux new -s main"
 alias em="emacs -nw"
 alias ee="emacs -nw -Q -l ~/.config/emacs/quick-init.el"
-alias vi="nvim"
 alias cat="bat -pp"
 alias lg="lazygit"
 alias pathlist='echo "$PATH" | tr ":" "\n"'

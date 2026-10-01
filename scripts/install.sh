@@ -81,7 +81,7 @@ install_vim_plugins() {
   VIM_PACK_DIR="$HOME/.vim/pack/plugins/start"
   mkdir -p "$VIM_PACK_DIR"
 
-  # Vim Comments
+  # Vim Commentary
   git clone --depth 1 https://github.com/tpope/vim-commentary.git \
     "$VIM_PACK_DIR/vim-commentary"
   vim -u NONE -c "helptags $VIM_PACK_DIR/vim-commentary/doc" -c q
