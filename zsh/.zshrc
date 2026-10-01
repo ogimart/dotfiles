@@ -33,6 +33,7 @@ setopt hist_reduce_blanks     # Remove superfluous blanks
 
 ################################################################################
 # COMPLETION & ZSH ENHANCEMENTS
+fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
 fpath=("$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
 
 autoload -Uz compinit
