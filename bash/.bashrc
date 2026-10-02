@@ -114,7 +114,7 @@ __build_prompt() {
   fi
 }
 
-PROMPT_COMMAND='__build_prompt; history -a; history -n'
+PROMPT_COMMAND='history -a; history -n; __build_prompt '
 
 ################################################################################
 # SHELL OPTIONS
@@ -129,43 +129,7 @@ fi
 
 ################################################################################
 # ALIAS
-# common (macOS and linux)
-export EZA_CONFIG_DIR="$HOME/.config/eza"
-alias ls="eza --group-directories-first"
-alias la="eza -a --group-directories-first"
-alias ll="eza -al --time-style=long-iso --group-directories-first"
-alias lla="eza -alhmU --group --time-style=long-iso --group-directories-first"
-alias tree="eza --tree --group-directories-first -I .git"
-alias tm="tmux new -s main"
-alias em="emacs -nw"
-alias lg="lazygit"
-alias pathlist='echo "$PATH" | tr ":" "\n"'
-alias scheme="chez --libdirs ."
-
-# os specific
-if [[ "$OS" == "Darwin" ]]; then
-  # aws
-  alias awslocal='aws --profile localstack'
-  # lima aliases
-  alias docker='lima nerdctl'
-  alias lmake="lima make"
-  alias lcmake="lima cmake"
-  alias lctest="lima ctest"
-  alias lnpsql='lima nerdctl exec -it timescaledb psql -U postgres'
-  alias ew="open -a Emacs"
-elif [[ "$OS" == "Linux" ]]; then
-  alias grep='grep --color=auto'
-  # nerdctl aliases
-  alias docker='nerdctl'
-fi
-
-################################################################################
-# GNU EMACS
-# emacs quick launch
-ee() {
-    emacs -Q -l ~/.config/emacs/quick-init.el -nw "$@"
-}
-complete -o default ee
+[ -r "$HOME/.aliases" ] && . "$HOME/.aliases"
 
 ################################################################################
 # TODO SHELL OPTIONS

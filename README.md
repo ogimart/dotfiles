@@ -23,7 +23,7 @@ and email.
 | | |
 |---|---|
 | Editor | vim |
-| Shell | zsh |
+| Shells | zsh, bash |
 | Terminal | ghostty, tmux |
 | Languages | rust, c, c++, python, lisp, scheme |
 | Build | cargo, make, cmake, ninja |
@@ -34,14 +34,9 @@ and email.
 | VMs | lima |
 | AI Agents | opencode, llama.cpp |
 
-`gmake`, `tmux`, `lima` and `opencode` are installed on macOS only;
+`zsh-completions`, `gmake`, `tmux`, `lima`, `opencode`, `llama.cpp`
+are installed on macOS only;
 `ghostty` is commented out and assumed to be installed manually.
-
-On Ubuntu, add `zsh` to `/etc/shells` and make it the default login shell:
-```sh
-sudo chsh -s $(which zsh) $USER
-```
-Log out and back in to apply.
 
 ## UI
 

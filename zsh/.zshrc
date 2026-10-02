@@ -85,32 +85,6 @@ fi
 
 ################################################################################
 # ALIASES
-export EZA_CONFIG_DIR="$HOME/.config/eza"
-alias ls="eza --group-directories-first"
-alias la="eza -a --group-directories-first"
-alias ll="eza -al --time-style=long-iso --group-directories-first"
-alias lla="eza -alhmU --group --time-style=long-iso --group-directories-first"
-alias tree="eza --tree --group-directories-first -I .git"
-alias tm="tmux new -s main"
-alias em="emacs -nw"
-alias ee="emacs -nw -Q -l ~/.config/emacs/quick-init.el"
-alias cat="bat -pp"
-alias lg="lazygit"
-alias pathlist='echo "$PATH" | tr ":" "\n"'
-alias scheme="chez --libdirs ."
+[ -r "$HOME/.aliases" ] && . "$HOME/.aliases"
 
-# os specific
-if [[ "$OS" == "Darwin" ]]; then
-  alias awslocal='aws --profile localstack'
-  alias docker='lima nerdctl'
-  alias lmake="lima make"
-  alias lcmake="lima cmake"
-  alias lctest="lima ctest"
-  alias lnpsql='lima nerdctl exec -it timescaledb psql -U postgres'
-  alias ew="open -a Emacs"
-elif [[ "$OS" == "Linux" ]]; then
-  alias grep='grep --color=auto'
-  alias docker='nerdctl'
-fi
-
-# ~/.zshrc - eof
+# ~/.zshrc --- eof
