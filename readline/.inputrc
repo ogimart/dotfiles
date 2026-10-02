@@ -29,7 +29,7 @@ set completion-query-items 200
 set mark-symlinked-directories on
 
 # Don't automatically match files beginning with dot.
-set match-hidden-files off
+set match-hidden-files on
 
 # Display the common prefix choices on the first completion then cycle the
 # available choices on the next completion.
