@@ -1,7 +1,7 @@
 # ~/.bash_profile
 
 # Load environment
-[ -f "$HOME/.profile" ] && . "$HOME/.profile"
+[ -f "$HOME/.env" ] && . "$HOME/.env"
 
 # Load .bashrc
 [ -r "$HOME/.bashrc" ] && . "$HOME/.bashrc"

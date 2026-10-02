@@ -4,6 +4,6 @@
 typeset -U PATH path
 
 # Load environment
-[ -f "$HOME/.profile" ] && . "$HOME/.profile"
+[ -f "$HOME/.env" ] && . "$HOME/.env"
 
 # .zprofile --- eof
