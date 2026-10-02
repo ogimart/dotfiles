@@ -19,15 +19,8 @@ CONFIG_LIST=(
 case "$(uname -s)" in
   Linux)
     mkdir -p "$HOME/.backup"
-
-    if [ -f "$HOME/.bashrc" ] && [ ! -e "$HOME/.backup/.bashrc" ]; then
-      cp -p "$HOME/.bashrc" "$HOME/.backup/.bashrc"
-    fi
-
-    if [ -f "$HOME/.profile" ] && [ ! -e "$HOME/.backup/.profile" ]; then
-      cp -p "$HOME/.profile" "$HOME/.backup/.profile"
-    fi
-
+    [ -f "$HOME/.bashrc" ] && mv "$HOME/.bashrc" "$HOME/.backup/.bashrc"
+    [ -f "$HOME/.profile" ] && mv "$HOME/.profile" "$HOME/.backup/.profile"
     CONFIG_LIST+=(bash)
     ;;
   Darwin)
