@@ -56,15 +56,22 @@ if command -v fzf >/dev/null 2>&1; then
   if command -v rg >/dev/null 2>&1; then
     export FZF_DEFAULT_COMMAND='rg --files --hidden --follow \
       --glob "!{.git,node_modules,vendor,target,build,out}/*"'
+
+  # Base options and Catppuccin Mocha theme
+  export FZF_DEFAULT_OPTS=" \
+    --border \
+    --reverse \
+    --preview 'bat --color=always {}' \
+    --color=fg:#ced5f1,bg:#1e1d2c,hl:#91b2f4 \
+    --color=fg+:#ced5f1,bg+:#1e1d2c,hl+:#a5dfd5 \
+    --color=info:#ced5f1,prompt:#e490a7,pointer:#a5dfd5 \
+    --color=marker:#91b2f4,spinner:#ced5f1,header:#ced5f1 \
+    --multi"
   fi
 
-  # Catppuccin Mocha
-  export FZF_DEFAULT_OPTS=" \
-  --color=fg:#ced5f1,bg:#1e1d2c,hl:#91b2f4 \
-  --color=fg+:#ced5f1,bg+:#1e1d2c,hl+:#a5dfd5 \
-  --color=info:#ced5f1,prompt:#e490a7,pointer:#a5dfd5 \
-  --color=marker:#91b2f4,spinner:#ced5f1,header:#ced5f1 \
-  --multi"
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :500 {}'"
+  export FZF_CTRL_R_OPTS="--no-preview"
 fi
 
 ################################################################################
