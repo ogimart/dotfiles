@@ -3,8 +3,6 @@ vim9script
 ################################################################################
 # GENERAL
 filetype plugin indent on
-set nocompatible
-set encoding=utf-8
 set autoread
 set nospell
 set belloff=all
@@ -126,7 +124,7 @@ var lspServers = [
   }
 ]
 
-autocmd User LspSetup call LspAddServer(lspServers)
+autocmd User LspSetup g:LspAddServer(lspServers)
 
 augroup LspAutoFormat
   autocmd!
