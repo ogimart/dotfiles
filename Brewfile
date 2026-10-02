@@ -26,6 +26,7 @@ brew "lazygit"
 brew "lua-language-server"
 brew "ty"
 brew "ruff"
+brew "shellcheck"
 
 # Lisp / Scheme
 brew "roswell"
