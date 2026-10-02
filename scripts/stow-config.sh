@@ -7,6 +7,7 @@ mkdir -p "$HOME/.config"
 
 CONFIG_LIST=(
   shell
+  readline
   vim
   tmux
   bat
