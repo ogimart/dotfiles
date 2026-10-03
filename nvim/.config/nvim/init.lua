@@ -145,7 +145,8 @@ vim.keymap.set("n", "<leader>lc", "<cmd>lclose<cr>", { desc = "Close loclist" })
 vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 -- Other
 vim.keymap.set("n", "<leader>nh", "<cmd>nohlsearch<cr>", { desc = "Stop highlighting search" })
-vim.keymap.set("n", "<localleader>rs", ":SwankStart<CR>", { silent = true, desc = "Start Swank in tmux pane" })
+vim.keymap.set("n", "<localleader>rs", ":SwankStart<CR>",
+{ silent = true, desc = "Start Swank in tmux pane" })
 
 --------------------------------------------------------------------------------
 -- OmniComplete (replaced by nvim-cmp)

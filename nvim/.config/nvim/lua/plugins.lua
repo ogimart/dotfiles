@@ -142,7 +142,6 @@ vim.pack.add({
   ------------------------------------------------------------------------------
   -- LLM
   ------------------------------------------------------------------------------
-  gh("milanglacier/minuet-ai.nvim"),
   {
     src = gh("nickjvandyke/opencode.nvim"),
     version = vim.version.range("*"), -- Latest stable release
@@ -235,7 +234,6 @@ vim.keymap.set("v", "<leader>ds", ":DB<CR>", { desc = "Execute selected SQL" })
 --------------------------------------------------------------------------------
 -- Completion
 --------------------------------------------------------------------------------
-local minuet = require("minuet")
 local cmp = require("cmp")
 cmp.setup({
   snippet = {
@@ -256,25 +254,22 @@ cmp.setup({
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.abort(),
     ["<CR>"] = cmp.mapping.confirm({ select = true }),
-    ["<C-l>"] = minuet.make_cmp_map(), -- ask minuet directly
+    -- TODO llm ["<C-l>"]
   }),
   sources = cmp.config.sources({
-    { name = "nvim_lsp" },
-    { name = "nvim_lsp_signature_help" },
-    {
-      name = "minuet",
-      priority = 50
+      { name = "nvim_lsp" },
+      { name = "nvim_lsp_signature_help" },
     },
-  }, {
-    { name = "buffer" },
-    { name = "path" },
-  }),
+    {
+      { name = "buffer" },
+      { name = "path" },
+    }),
   formatting = {
     fields = { "menu", "abbr", "kind" },
     format = function(entry, item)
       local menu_icon = {
-        minuet = "[α]",
-        nvim_lsp = "[σ]", -- maybe use σ instead; α for llm
+        -- TODO llm = "[α]",
+        nvim_lsp = "[σ]",
         buffer = "[β]",
         path = "[π]",
         conjure = "[λ]",
@@ -456,61 +451,6 @@ vim.g["conjure#filetype_suffixes#scheme"] = { "scm", "sld", "ss", "sls" }
 vim.g["conjure#client#scheme#stdio#command"] = "chibi-scheme"
 vim.g["conjure#client#scheme#stdio#prompt_pattern"] = "> $?"
 vim.g["conjure#client#scheme#stdio#value_prefix_pattern"] = false
-
---------------------------------------------------------------------------------
--- Minuet
---------------------------------------------------------------------------------
-require('minuet').setup({
-  provider = 'openai_fim_compatible',
-  n_completions = 1,     -- one suggestion is plenty for a local model
-  context_window = 4000, -- characters around the cursor; raise until it feels laggy
-  request_timeout = 3,   -- seconds
-  debounce = 300,        -- ms after you stop typing before a request fires
-  throttle = 1000,       -- ms minimum between requests
-
-  provider_options = {
-    openai_fim_compatible = {
-      api_key = 'TERM', -- name of any env var that exists; llama.cpp ignores it
-      name = 'Llama.cpp',
-      end_point = 'http://localhost:8012/v1/completions',
-      model = 'PLACEHOLDER', -- the model is fixed when llama-server starts
-      optional = {
-        max_tokens = 56,
-        top_p = 0.9,
-      },
-      template = {
-        prompt = function(context_before_cursor, context_after_cursor, _)
-          return '<|fim_prefix|>'
-              .. context_before_cursor
-              .. '<|fim_suffix|>'
-              .. context_after_cursor
-              .. '<|fim_middle|>'
-        end,
-        suffix = false,
-      },
-    },
-  },
-
-  -- Inline ghost text: auto-triggers while typing in these filetypes
-  virtualtext = {
-    auto_trigger_ft = {},
-    -- auto_trigger_ft = { 'lua', 'python', 'rust', 'typescript', 'c', 'cpp', 'sh' },
-    keymap = {
-      accept = '<A-A>',         -- accept whole suggestion
-      accept_line = '<A-a>',    -- accept one line
-      accept_n_lines = '<A-z>', -- accept N lines (prompts for N)
-      prev = '<A-[>',           -- cycle / manually trigger
-      next = '<A-]>',
-      dismiss = '<A-e>',
-    },
-    show_on_completion_menu = true, -- keep ghost text visible while the cmp menu is open
-  },
-
-  -- cmp source: manual only, so it doesn't double up with the ghost text
-  cmp = {
-    enable_auto_complete = true,
-  },
-})
 
 --------------------------------------------------------------------------------
 -- OpenCode
