@@ -28,6 +28,7 @@ keybind = ctrl+[=text:\x1b
 
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
+macos-titlebar-style = tabs
 
 # config -- eof
 
