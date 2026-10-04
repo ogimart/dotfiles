@@ -123,13 +123,16 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 --------------------------------------------------------------------------------
 vim.api.nvim_create_user_command("SwankStart", function()
   -- Start swank in a vertical split tmux pane (right 50%)
-  -- vim.fn.system("tmux split-window -h 'fish -c sbcl-swank'")
+  -- vim.fn.system("tmux split-window -h '$SHELL -ic sbcl-swank'")
 
   -- Start swank in a horizontal tmux pane (bottom 25%)
-  -- vim.fn.system("tmux split-window -v -p 25 'fish -c sbcl-swank'")
+  -- vim.fn.system("tmux split-window -v -p 25 '$SHELL -ic sbcl-swank'")
 
   -- Start swank in a new tmux window named 'swank'
-  vim.fn.system("tmux new-window -d -n swank 'fish -c sbcl-swank'")
+  -- vim.fn.system("tmux new-window -d -n swank '$SHELL -ic sbcl-swank'")
+
+  -- Start swank in a new nvim terminal
+  vim.fn.termopen({ vim.o.shell, "-ic", "sbcl-swank" })
 end, {})
 
 --------------------------------------------------------------------------------
@@ -146,7 +149,7 @@ vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 -- Other
 vim.keymap.set("n", "<leader>nh", "<cmd>nohlsearch<cr>", { desc = "Stop highlighting search" })
 vim.keymap.set("n", "<localleader>rs", ":SwankStart<CR>",
-{ silent = true, desc = "Start Swank in tmux pane" })
+  { silent = true, desc = "Start Swank in tmux pane" })
 
 --------------------------------------------------------------------------------
 -- OmniComplete (replaced by nvim-cmp)

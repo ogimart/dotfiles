@@ -29,7 +29,7 @@ brew "ruff"
 brew "shellcheck"
 
 # Lisp / Scheme
-brew "roswell"
+brew "sbcl"
 brew "chezscheme"
 brew "rlwrap"
 

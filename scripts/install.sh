@@ -144,18 +144,25 @@ install_clang() {
 }
 
 ################################################################################
-# Lisp (sbcl)
-install_lisp() {
-  if ! command -v ros &>/dev/null; then
-    echo "Roswell is not installed. Skipping Lisp install."
-    return 1
-  fi
+# Quicklisp (sbcl)
+install_quicklisp() {
+  echo "Installing quicklisp... "
+  curl -fsSLO https://beta.quicklisp.org/quicklisp.lisp &&
+    sbcl --non-interactive \
+    --load quicklisp.lisp \
+    --eval '(quicklisp-quickstart:install :path "~/.quicklisp")' \
+    --quit
+  rm -f quicklisp.lisp
+  echo "Quicklisp installed successfully."
+}
 
-  ros setup
-  ros install sbcl-bin
-  ros install slime
-
-  echo "Lisp installed successfully."
+install_quicklisp_pkg() {
+  echo "Installing quicklisp packages... "
+  sbcl --non-interactive \
+    --load "$HOME/.quicklisp/setup.lisp" \
+    --eval '(ql:quickload :swank)' \
+    --quit
+  echo "Quicklisp packages installed successfully."
 }
 
 ################################################################################
@@ -171,6 +178,7 @@ install_rust
 # install_clang 22
 
 # Uncomment to install Quicklisp
-# install_lisp
+# install_quicklisp
+# install_quicklisp_pkg
 
 echo "Install complete."

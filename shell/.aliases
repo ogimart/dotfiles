@@ -30,4 +30,15 @@ case $(uname -s) in
     ;;
 esac
 
+sbcl-repl() {
+  rlwrap sbcl --load "$HOME/.quicklisp/setup.lisp" "$@"
+}
+
+sbcl-swank() {
+  rlwrap sbcl --load "$HOME/.quicklisp/setup.lisp" \
+    "$@" \
+    --eval '(ql:quickload :swank)' \
+    --eval '(swank:create-server :dont-close t)'
+}
+
 # ~/.aliases --- eof
