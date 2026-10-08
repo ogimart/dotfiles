@@ -23,6 +23,7 @@ case $(uname -s) in
     alias lctest='lima ctest'
     alias lnpsql='lima nerdctl exec -it timescaledb psql -U postgres'
     alias ew='open -a Emacs'
+    alias osajs='osascript -l JavaScript'
     ;;
   Linux)
     alias grep='grep --color=auto'
